@@ -43,8 +43,8 @@
 
     // Replace both values with the project's URL and public/publishable key.
     // Never use a service_role or secret key in this public page.
-    const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
-    const SUPABASE_PUBLISHABLE_KEY = 'PEGA_AQUI_TU_CLAVE_PUBLICABLE';
+    const SUPABASE_URL = 'https://alqoigvsxsgqenqosfbr.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_bHXZOe0puNVzekZFFxdm0g_qDQ1Aawo';
     const currency = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' });
     const cart = new Map();
     let products = [];
@@ -143,6 +143,7 @@
 
     document.getElementById('order-form').addEventListener('submit', async (event) => {
       event.preventDefault();
+      const formElement = event.currentTarget;
       const entries = [...cart.entries()];
       if (!entries.length) {
         setNotice('Agrega por lo menos un jabón antes de enviar el pedido.', true);
@@ -151,25 +152,40 @@
       const submit = document.getElementById('submit-order');
       submit.disabled = true;
       submit.textContent = 'Enviando…';
-      const form = new FormData(event.currentTarget);
-      const { data, error } = await client.rpc('submit_web_order', {
-        p_customer_name: form.get('name'),
-        p_customer_phone: form.get('phone'),
-        p_customer_email: form.get('email') || null,
-        p_delivery_address: form.get('address') || null,
-        p_notes: form.get('notes') || null,
-        p_items: entries.map(([product_id, quantity]) => ({ product_id, quantity })),
-      });
+      const form = new FormData(formElement);
+      let result;
+      try {
+        result = await client.rpc('submit_web_order', {
+          p_customer_name: form.get('name'),
+          p_customer_phone: form.get('phone'),
+          p_customer_email: form.get('email') || null,
+          p_delivery_address: form.get('address') || null,
+          p_notes: form.get('notes') || null,
+          p_items: entries.map(([product_id, quantity]) => ({ product_id, quantity })),
+        });
+      } catch (error) {
+        submit.disabled = false;
+        submit.textContent = 'Enviar pedido';
+        setNotice(error.message || 'No se pudo enviar el pedido. Inténtalo de nuevo.', true);
+        return;
+      }
       submit.disabled = false;
       submit.textContent = 'Enviar pedido';
+      const { data, error } = result;
       if (error) {
         setNotice(error.message || 'No se pudo enviar el pedido. Comprueba la disponibilidad e inténtalo de nuevo.', true);
         return;
       }
       cart.clear();
-      event.currentTarget.reset();
+      formElement.reset();
       document.getElementById('cart-count').textContent = '0';
       renderCart();
+      const { data: refreshedCatalog, error: refreshError } = await client.rpc('get_web_catalog');
+      if (!refreshError) renderCatalog(refreshedCatalog?.settings || {}, refreshedCatalog?.products || []);
+      if (refreshError) {
+        setNotice(`Tu pedido ${data} quedó registrado, pero no se pudo actualizar el catálogo: ${refreshError.message}`, true);
+        return;
+      }
       setNotice(`¡Gracias! Tu pedido ${data} quedó registrado. El taller se pondrá en contacto para coordinarlo.`);
     });
 
