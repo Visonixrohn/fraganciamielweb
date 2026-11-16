@@ -189,8 +189,17 @@
       background: #f7f1e4;
       border-color: #ddd0b0;
     }
-    .button.whatsapp { background: #2d6a45; }
-    .button.whatsapp:hover:not(:disabled) { background: #245638; }
+    .button.honey,
+    .button.whatsapp {
+      background: linear-gradient(135deg, #ffdc72, #f3ad28);
+      color: #4a3212;
+      box-shadow: 0 5px 16px rgba(153, 99, 14, 0.26);
+    }
+    .button.honey:hover:not(:disabled),
+    .button.whatsapp:hover:not(:disabled) {
+      background: linear-gradient(135deg, #ffe99b, #ffc144);
+      box-shadow: 0 7px 20px rgba(153, 99, 14, 0.32);
+    }
 
     /* ——— Hero ——— */
     .hero {
@@ -504,17 +513,18 @@
       align-items: center;
       padding: 48px;
       border-radius: 20px;
-      background: linear-gradient(135deg, #fff1ce 0%, #f8e6b8 50%, #f5e9d1 100%);
-      border: 1px solid #ecd99a;
+      background: linear-gradient(135deg, #fff1bf 0%, #f8d775 50%, #efb947 100%);
+      border: 1px solid #e6bd55;
     }
     .about h2 {
       margin: 8px 0 14px;
-      color: var(--green);
+      color: #59370e;
       font: 700 30px/1.2 var(--serif);
     }
+    .about .eyebrow { color: #80500f; }
     .about p {
       margin: 0;
-      color: var(--ink-soft);
+      color: #5d4728;
       font-size: 14px;
       line-height: 1.8;
     }
@@ -524,7 +534,7 @@
       overflow: hidden;
       border-radius: 14px;
       border: 1px solid #e7cc8e;
-      background: radial-gradient(circle at 70% 10%, #fff8dd, #f3dfa9 80%);
+      background: radial-gradient(circle at 70% 10%, #fff4bf, #eab746 80%);
     }
     .workshop-video {
       position: absolute;
@@ -1282,7 +1292,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
           <span class="flower">✿</span>
           <h3>Tu pedido te espera</h3>
           <p>Revisa tus jabones favoritos, elige cantidades y envíanos tu pedido. Te confirmaremos disponibilidad y coordinaremos la entrega.</p>
-          <button class="button" type="button" data-open-cart>Ver mi carrito <span aria-hidden="true">→</span></button>
+          <button class="button honey" type="button" data-open-cart>Ver mi carrito <span aria-hidden="true">→</span></button>
         </div>
       </div>
     </section>
@@ -1291,7 +1301,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       <span class="eyebrow">Para tiendas y proyectos</span>
       <h2>¿Te interesa revender?</h2>
       <p>Conversemos sobre nuestros jabones artesanales, disponibilidad y opciones para tu negocio.</p>
-      <a id="reseller-link" class="button whatsapp" href="#" target="_blank" rel="noreferrer">Escríbenos por WhatsApp</a>
+      <a id="reseller-link" class="button honey whatsapp" href="#" target="_blank" rel="noreferrer">Escríbenos por WhatsApp</a>
     </section>
   </main>
 
