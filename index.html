@@ -49,6 +49,33 @@
     img { max-width: 100%; display: block; }
     [hidden] { display: none !important; }
     body.modal-open { overflow: hidden; }
+    .honey-edge {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 45;
+      width: 18px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .honey-edge.left { left: 0; }
+    .honey-edge.right { right: 0; }
+    .honey-edge span {
+      position: absolute;
+      top: 0;
+      width: 7px;
+      border-radius: 0 0 999px 999px;
+      background: linear-gradient(90deg, #d69420, #f8cc62 55%, #e7aa32);
+      box-shadow: 0 2px 6px rgba(153, 99, 14, 0.18);
+      transform-origin: top;
+      animation: honey-drip 5s ease-in-out infinite alternate;
+    }
+    .honey-edge span:nth-child(1) { left: 2px; height: 110px; }
+    .honey-edge span:nth-child(2) { left: 11px; height: 62px; animation-delay: -2s; }
+    .honey-edge span:nth-child(3) { left: 6px; height: 34px; animation-delay: -3.5s; }
+    .honey-edge.right span { right: 2px; left: auto; }
+    .honey-edge.right span:nth-child(2) { right: 11px; }
+    .honey-edge.right span:nth-child(3) { right: 6px; }
 
     /* ——— Header ——— */
     .top {
@@ -569,6 +596,7 @@
       color: #9e8051;
       font-size: 24px;
     }
+    .order-invitation img.flower { object-fit: contain; padding: 8px; }
     .order-invitation h3 {
       margin: 0 0 10px;
       color: var(--green);
@@ -625,7 +653,17 @@
       background: rgba(30, 22, 12, 0.55);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      animation: fade-in 0.2s ease;
+      animation: fade-in 0.5s ease;
+    }
+    .modal-backdrop > [role="dialog"] {
+      animation: modal-enter 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .modal-backdrop.is-closing {
+      pointer-events: none;
+      animation: backdrop-exit 0.5s ease both;
+    }
+    .modal-backdrop.is-closing > [role="dialog"] {
+      animation: modal-exit 0.5s cubic-bezier(0.4, 0, 1, 1) both;
     }
     .shopping-modal {
       position: relative;
@@ -636,7 +674,6 @@
       border-radius: 22px;
       background: #fbfaf6;
       box-shadow: 0 32px 80px rgba(30, 22, 12, 0.28);
-      animation: modal-rise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .product-detail-modal {
       position: relative;
@@ -647,7 +684,6 @@
       border-radius: 22px;
       background: #fbfaf6;
       box-shadow: 0 32px 80px rgba(30, 22, 12, 0.28);
-      animation: honeycomb-open 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .product-detail-layout {
       display: grid;
@@ -972,7 +1008,6 @@
       background: #fbfaf6;
       box-shadow: 0 32px 80px rgba(30, 22, 12, 0.28);
       text-align: center;
-      animation: modal-rise 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .result-modal .modal-close {
       position: absolute;
@@ -1084,14 +1119,20 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    @keyframes modal-rise {
-      from { opacity: 0; transform: translateY(16px) scale(0.985); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes modal-enter {
+      0% { opacity: 0; transform: translateY(28px) scale(0.82); }
+      72% { opacity: 1; transform: translateY(-3px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    @keyframes honeycomb-open {
-      0% { opacity: 0; transform: translateY(18px) scale(0.84) rotate(-1.5deg); }
-      72% { opacity: 1; transform: translateY(-2px) scale(1.015) rotate(0.2deg); }
-      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    @keyframes modal-exit {
+      to { opacity: 0; transform: translateY(18px) scale(0.9); }
+    }
+    @keyframes backdrop-exit {
+      to { opacity: 0; }
+    }
+    @keyframes honey-drip {
+      from { transform: scaleY(0.88); }
+      to { transform: scaleY(1.08); }
     }
     @keyframes badge-pop {
       0% { transform: scale(0.75); }
@@ -1170,13 +1211,11 @@
         width: 100%;
         max-height: 94dvh;
         border-radius: 20px 20px 0 0;
-        animation: modal-sheet 0.3s ease;
       }
       .product-detail-modal {
         width: 100%;
         max-height: 94dvh;
         border-radius: 20px 20px 0 0;
-        animation: honeycomb-open 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
       .product-detail-layout { min-height: 0; grid-template-columns: 1fr; }
       .product-detail-image,
@@ -1206,10 +1245,6 @@
       }
       .site-toast { right: 12px; bottom: 12px; }
       .flying-bee { font-size: 13px; }
-      @keyframes modal-sheet {
-        from { transform: translateY(28px); opacity: 0.6; }
-        to { transform: translateY(0); opacity: 1; }
-      }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1223,6 +1258,8 @@
   </style>
 </head>
 <body>
+  <div class="honey-edge left" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="honey-edge right" aria-hidden="true"><span></span><span></span><span></span></div>
   <header class="top">
     <a class="brand" href="#inicio">
       <span id="brand-mark" class="brand-mark">✿</span>
@@ -1289,7 +1326,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       </div>
       <div class="order-section">
         <div class="order-invitation">
-          <span class="flower">✿</span>
+          <span id="order-logo" class="flower">✿</span>
           <h3>Tu pedido te espera</h3>
           <p>Revisa tus jabones favoritos, elige cantidades y envíanos tu pedido. Te confirmaremos disponibilidad y coordinaremos la entrega.</p>
           <button class="button honey" type="button" data-open-cart>Ver mi carrito <span aria-hidden="true">→</span></button>
@@ -1415,6 +1452,8 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_bHXZOe0puNVzekZFFxdm0g_qDQ1Aawo';
     const currency = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' });
     const cart = new Map();
+    const modalClosures = new WeakMap();
+    let databasePromise;
     let products = [];
     let client;
     let detailProduct = null;
@@ -1425,6 +1464,61 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
     })[character]);
     const imageUrl = (path) => path ? client.storage.from('jabon').getPublicUrl(path).data.publicUrl : '';
+    const getDatabase = () => {
+      if (!databasePromise) {
+        databasePromise = new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error('Este navegador no permite guardar datos localmente.'));
+            return;
+          }
+          const request = window.indexedDB.open('fragancia-miel', 1);
+          request.onupgradeneeded = () => {
+            const database = request.result;
+            database.createObjectStore('cart', { keyPath: 'id' });
+            database.createObjectStore('orders', { keyPath: 'id', autoIncrement: true });
+          };
+          request.onsuccess = () => {
+            request.result.onversionchange = () => request.result.close();
+            resolve(request.result);
+          };
+          request.onerror = () => reject(request.error || new Error('No se pudo abrir la base local.'));
+        });
+      }
+      return databasePromise;
+    };
+    const waitForTransaction = (transaction) => new Promise((resolve, reject) => {
+      transaction.addEventListener('complete', resolve, { once: true });
+      transaction.addEventListener('error', () => {
+        reject(transaction.error || new Error('Falló una operación de almacenamiento local.'));
+      }, { once: true });
+      transaction.addEventListener('abort', () => {
+        reject(transaction.error || new Error('Se canceló una operación de almacenamiento local.'));
+      }, { once: true });
+    });
+    const readSavedCart = async () => {
+      const database = await getDatabase();
+      const transaction = database.transaction('cart', 'readonly');
+      const request = transaction.objectStore('cart').get('current');
+      const requestResult = new Promise((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('No se pudo leer el carrito guardado.'));
+      });
+      const [savedCart] = await Promise.all([requestResult, waitForTransaction(transaction)]);
+      return Array.isArray(savedCart?.items) ? savedCart.items : [];
+    };
+    const saveCart = async () => {
+      const items = [...cart.entries()];
+      const database = await getDatabase();
+      const transaction = database.transaction('cart', 'readwrite');
+      transaction.objectStore('cart').put({ id: 'current', items });
+      await waitForTransaction(transaction);
+    };
+    const saveOrder = async (order) => {
+      const database = await getDatabase();
+      const transaction = database.transaction('orders', 'readwrite');
+      transaction.objectStore('orders').add(order);
+      await waitForTransaction(transaction);
+    };
     const renderProductDetails = (product) => {
       const list = (title, values) => values?.length
         ? `<div><h4>${title}</h4><ul>${values.map((entry) => `<li>${escapeHtml(entry)}</li>`).join('')}</ul></div>` : '';
@@ -1442,6 +1536,39 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     const hideCartFeedback = () => {
       document.getElementById('cart-feedback').hidden = true;
       document.getElementById('cart-feedback').classList.remove('feedback-shake');
+    };
+    const persistCartWithNotice = async () => {
+      try {
+        await saveCart();
+      } catch (error) {
+        showToast(`No se pudo guardar el carrito en este dispositivo: ${error.message}`);
+      }
+    };
+    const hideModal = (backdrop) => {
+      if (backdrop.hidden) return Promise.resolve();
+      const currentClose = modalClosures.get(backdrop);
+      if (currentClose) return currentClose;
+
+      const closing = new Promise((resolve) => {
+        let fallbackTimer;
+        const finish = () => {
+          clearTimeout(fallbackTimer);
+          backdrop.removeEventListener('animationend', handleAnimationEnd);
+          backdrop.hidden = true;
+          backdrop.classList.remove('is-closing');
+          modalClosures.delete(backdrop);
+          resolve();
+        };
+        const handleAnimationEnd = (event) => {
+          if (event.target === backdrop && event.animationName === 'backdrop-exit') finish();
+        };
+
+        backdrop.classList.add('is-closing');
+        backdrop.addEventListener('animationend', handleAnimationEnd);
+        fallbackTimer = setTimeout(finish, 600);
+      });
+      modalClosures.set(backdrop, closing);
+      return closing;
     };
     const showToast = (message) => {
       const toast = document.getElementById('site-toast');
@@ -1474,6 +1601,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         return;
       }
       cart.set(product.id, existing + addedQuantity);
+      void persistCartWithNotice();
       renderCart();
       updateCartBadge();
       hideCartFeedback();
@@ -1509,8 +1637,8 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       document.body.classList.add('modal-open');
       document.getElementById('close-product-modal').focus();
     };
-    const closeProductDetails = () => {
-      document.getElementById('product-modal').hidden = true;
+    const closeProductDetails = async () => {
+      await hideModal(document.getElementById('product-modal'));
       document.body.classList.remove('modal-open');
       returnFocus?.focus?.();
     };
@@ -1522,8 +1650,8 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       document.body.classList.add('modal-open');
       document.querySelector('#cart-modal input[name="name"]').focus();
     };
-    const closeCart = () => {
-      document.getElementById('cart-modal').hidden = true;
+    const closeCart = async () => {
+      await hideModal(document.getElementById('cart-modal'));
       document.body.classList.remove('modal-open');
       returnFocus?.focus?.();
     };
@@ -1558,6 +1686,13 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         logo.src = imageUrl(settings.logo_path);
         logo.alt = `Logo de ${businessName}`;
         document.getElementById('brand-mark')?.replaceWith(logo);
+
+        const orderLogo = document.createElement('img');
+        orderLogo.id = 'order-logo';
+        orderLogo.className = 'flower';
+        orderLogo.src = imageUrl(settings.logo_path);
+        orderLogo.alt = `Logo de ${businessName}`;
+        document.getElementById('order-logo')?.replaceWith(orderLogo);
       }
       const contacts = [settings?.phone, settings?.email, settings?.address].filter(Boolean);
       document.getElementById('footer-contact').textContent = contacts.join(' · ');
@@ -1639,8 +1774,26 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
           else cart.set(id, Math.min(next, Number(product.available)));
         }
         renderCart();
+        void persistCartWithNotice();
         updateCartBadge();
       }));
+    }
+
+    function restoreCart(savedItems) {
+      for (const entry of savedItems) {
+        if (!Array.isArray(entry) || entry.length !== 2) continue;
+        const [id, storedQuantity] = entry;
+        const product = products.find((item) => item.id === id);
+        const quantity = Number(storedQuantity);
+        if (!product || !Number.isInteger(quantity) || quantity < 1) continue;
+        const available = Math.max(0, Number(product.available || 0));
+        if (available > 0) cart.set(id, Math.min(quantity, available));
+      }
+      if (JSON.stringify([...cart.entries()]) !== JSON.stringify(savedItems)) {
+        void persistCartWithNotice();
+      }
+      renderCart();
+      updateCartBadge();
     }
 
     document.getElementById('order-form').addEventListener('submit', async (event) => {
@@ -1678,7 +1831,33 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         showCartFeedback(error.message || 'No se pudo enviar el pedido. Comprueba la disponibilidad e inténtalo de nuevo.');
         return;
       }
+      let storageWarning = '';
+      try {
+        const orderItems = entries.map(([productId, quantity]) => {
+          const product = products.find((item) => item.id === productId);
+          return {
+            productId,
+            name: product?.name || String(productId),
+            quantity,
+            unitPrice: Number(product?.price || 0),
+          };
+        });
+        await saveOrder({
+          orderNumber: data,
+          createdAt: new Date().toISOString(),
+          status: 'received',
+          items: orderItems,
+          total: orderItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0),
+        });
+      } catch (storageError) {
+        storageWarning = `El pedido sí quedó registrado, pero no se pudo guardar su copia en este dispositivo: ${storageError.message}`;
+      }
       cart.clear();
+      try {
+        await saveCart();
+      } catch (storageError) {
+        storageWarning = [storageWarning, `No se pudo actualizar el carrito guardado: ${storageError.message}`].filter(Boolean).join(' ');
+      }
       formElement.reset();
       updateCartBadge();
       renderCart();
@@ -1690,11 +1869,14 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       } catch (refreshError) {
         refreshWarning = refreshError.message || 'No se pudo actualizar la disponibilidad en pantalla.';
       }
-      closeCart();
+      await closeCart();
       showOrderResult({
         success: true,
         orderNumber: data,
-        warning: refreshWarning ? `Tu pedido sí quedó registrado. No se pudo actualizar la disponibilidad en pantalla: ${refreshWarning}` : '',
+        warning: [
+          storageWarning,
+          refreshWarning ? `Tu pedido sí quedó registrado. No se pudo actualizar la disponibilidad en pantalla: ${refreshWarning}` : '',
+        ].filter(Boolean).join(' '),
         message: 'Fragancia y Miel se contactará contigo para coordinar tu pedido.',
       });
     });
@@ -1741,8 +1923,8 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     document.getElementById('product-modal').addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closeProductDetails();
     });
-    const closeResult = () => {
-      document.getElementById('result-backdrop').hidden = true;
+    const closeResult = async () => {
+      await hideModal(document.getElementById('result-backdrop'));
       document.body.classList.remove('modal-open');
       document.getElementById('open-cart').focus();
     };
@@ -1766,12 +1948,18 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
         auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
       });
+      const savedCartPromise = readSavedCart().catch((storageError) => {
+        showToast(`No se pudo recuperar el carrito guardado: ${storageError.message}`);
+        return [];
+      });
       const { data, error } = await client.rpc('get_web_catalog');
       if (error) {
         document.getElementById('catalog-status').textContent = `No se pudo cargar el catálogo: ${error.message}`;
         return;
       }
+      const savedCart = await savedCartPromise;
       renderCatalog(data?.settings || {}, data?.products || []);
+      restoreCart(savedCart);
     }
     init().catch((error) => {
       document.getElementById('catalog-status').textContent = `No se pudo cargar el catálogo: ${error.message}`;
