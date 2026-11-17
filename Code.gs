@@ -1,12 +1,7 @@
-// Google Apps Script: configure the recipient, deploy as a web app, and use
-// the deployment URL in index.html as GOOGLE_APPS_SCRIPT_URL.
+// Google Apps Script: deploy as a web app and use its URL in index.html.
 const RECIPIENT_EMAIL = 'visonixro@gmail.com';
 
 function doGet(e) {
-  return handleOrderRequest_(e);
-}
-
-function doPost(e) {
   return handleOrderRequest_(e);
 }
 
