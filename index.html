@@ -1745,7 +1745,9 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     const currency = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' });
     const cart = new Map();
     const modalClosures = new WeakMap();
+    const modalHistoryKey = 'fraganciaMielModal';
     let databasePromise;
+    let modalHistoryBackPending = false;
     let products = [];
     let concernOptions = [];
     let selectedConcerns = new Set();
@@ -1832,6 +1834,21 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     const hideCartFeedback = () => {
       document.getElementById('cart-feedback').hidden = true;
       document.getElementById('cart-feedback').classList.remove('feedback-shake');
+    };
+    const openModalHistory = () => {
+      if (history.state?.[modalHistoryKey]) return;
+      const currentState = history.state && typeof history.state === 'object' ? history.state : {};
+      history.pushState({ ...currentState, [modalHistoryKey]: true }, '', location.href);
+    };
+    if (history.state?.[modalHistoryKey]) {
+      const currentState = { ...history.state };
+      delete currentState[modalHistoryKey];
+      history.replaceState(currentState, '', location.href);
+    }
+    const closeModalHistory = (fromPopstate, keepHistory) => {
+      if (fromPopstate || keepHistory || modalHistoryBackPending || !history.state?.[modalHistoryKey]) return;
+      modalHistoryBackPending = true;
+      history.back();
     };
     const persistCartWithNotice = async () => {
       try {
@@ -1928,11 +1945,13 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       availability.classList.toggle('none', available < 1);
       document.getElementById('product-modal-content').innerHTML = renderProductDetails(product);
       document.getElementById('product-modal-add').disabled = available < 1;
+      openModalHistory();
       document.getElementById('product-modal').hidden = false;
       document.body.classList.add('modal-open');
       document.getElementById('close-product-modal').focus();
     };
-    const closeProductDetails = async () => {
+    const closeProductDetails = async ({ fromPopstate = false } = {}) => {
+      closeModalHistory(fromPopstate, false);
       await hideModal(document.getElementById('product-modal'));
       document.body.classList.remove('modal-open');
       returnFocus?.focus?.();
@@ -1941,11 +1960,13 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       returnFocus = trigger || document.activeElement;
       hideCartFeedback();
       renderCart();
+      openModalHistory();
       document.getElementById('cart-modal').hidden = false;
       document.body.classList.add('modal-open');
       document.querySelector('#cart-modal input[name="name"]').focus();
     };
-    const closeCart = async () => {
+    const closeCart = async ({ fromPopstate = false, keepHistory = false } = {}) => {
+      closeModalHistory(fromPopstate, keepHistory);
       await hideModal(document.getElementById('cart-modal'));
       document.body.classList.remove('modal-open');
       returnFocus?.focus?.();
@@ -1962,6 +1983,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       const warningBox = document.getElementById('refresh-warning');
       warningBox.hidden = !warning;
       warningBox.textContent = warning || '';
+      openModalHistory();
       document.getElementById('result-backdrop').hidden = false;
       document.body.classList.add('modal-open');
       document.getElementById('close-result').focus();
@@ -2064,11 +2086,13 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         checkbox.closest('.concern-option').classList.toggle('is-selected', checkbox.checked);
       });
       document.getElementById('concern-search-error').hidden = true;
+      openModalHistory();
       document.getElementById('concern-search-modal').hidden = false;
       document.body.classList.add('modal-open');
       document.getElementById('close-concern-search').focus();
     };
-    const closeConcernSearch = async () => {
+    const closeConcernSearch = async ({ fromPopstate = false } = {}) => {
+      closeModalHistory(fromPopstate, false);
       await hideModal(document.getElementById('concern-search-modal'));
       document.body.classList.remove('modal-open');
       concernSearchReturnFocus?.focus?.();
@@ -2211,7 +2235,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       } catch (refreshError) {
         refreshWarning = refreshError.message || 'No se pudo actualizar la disponibilidad en pantalla.';
       }
-      await closeCart();
+      await closeCart({ keepHistory: true });
       showOrderResult({
         success: true,
         orderNumber: data,
@@ -2287,7 +2311,8 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     document.getElementById('product-modal').addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closeProductDetails();
     });
-    const closeResult = async () => {
+    const closeResult = async ({ fromPopstate = false } = {}) => {
+      closeModalHistory(fromPopstate, false);
       await hideModal(document.getElementById('result-backdrop'));
       document.body.classList.remove('modal-open');
       document.getElementById('open-cart').focus();
@@ -2296,6 +2321,16 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     document.getElementById('result-done').addEventListener('click', closeResult);
     document.getElementById('result-backdrop').addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closeResult();
+    });
+    window.addEventListener('popstate', () => {
+      if (modalHistoryBackPending) {
+        modalHistoryBackPending = false;
+        return;
+      }
+      if (!document.getElementById('result-backdrop').hidden) void closeResult({ fromPopstate: true });
+      else if (!document.getElementById('cart-modal').hidden) void closeCart({ fromPopstate: true });
+      else if (!document.getElementById('product-modal').hidden) void closeProductDetails({ fromPopstate: true });
+      else if (!document.getElementById('concern-search-modal').hidden) void closeConcernSearch({ fromPopstate: true });
     });
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
