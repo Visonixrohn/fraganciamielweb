@@ -310,15 +310,18 @@
     /* ——— Products ——— */
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 28px;
       margin-top: 40px;
       align-items: stretch;
+      justify-content: center;
     }
     .product {
       position: relative;
       display: flex;
       flex-direction: column;
+      width: min(100%, 360px);
+      justify-self: center;
       aspect-ratio: 4 / 5;
       min-height: 400px;
       min-width: 0;
@@ -545,14 +548,27 @@
       font-size: 13px;
     }
     .catalog-filter-reset {
-      padding: 6px 12px;
-      border: 1px solid var(--line);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      border: 1px solid rgba(51, 91, 67, 0.22);
       border-radius: 999px;
-      background: var(--white);
+      background: #edf4ed;
       color: var(--green);
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .catalog-filter-reset:hover {
+      transform: translateY(-1px);
+      border-color: var(--green);
+      background: #e2eee2;
+    }
+    .catalog-filter-reset span {
+      font-size: 17px;
+      line-height: 0.8;
     }
     .concern-search-trigger {
       position: fixed;
@@ -580,35 +596,101 @@
       width: min(100%, 520px);
       max-height: min(88vh, 680px);
       overflow: auto;
-      border: 1px solid #ebe3d0;
-      border-radius: 22px;
-      background: #fbfaf6;
-      box-shadow: 0 32px 80px rgba(30, 22, 12, 0.28);
+      border: 1px solid rgba(201, 146, 42, 0.2);
+      border-radius: 26px;
+      background: #fffefa;
+      box-shadow: 0 32px 80px rgba(30, 22, 12, 0.3);
     }
-    .concern-search-form { padding: 22px 26px 26px; }
+    .concern-search-modal .modal-heading {
+      align-items: flex-start;
+      padding: 26px 28px 22px;
+      border-bottom-color: rgba(201, 146, 42, 0.18);
+      background: radial-gradient(circle at 0% 0%, #fff1c8, transparent 62%), #fffefa;
+    }
+    .concern-search-modal .modal-heading h2 {
+      max-width: 370px;
+      margin-top: 5px;
+      font-size: clamp(21px, 4vw, 26px);
+      line-height: 1.2;
+    }
+    .concern-search-modal .modal-heading p {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .concern-search-eyebrow {
+      color: #98722d;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+    .concern-search-form { padding: 20px 28px 26px; }
     .concern-search-hint {
-      margin: 0 0 16px;
+      margin: 0 0 18px;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
     }
-    .concern-options { display: grid; gap: 9px; }
+    .concern-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+      gap: 10px;
+    }
     .concern-option {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 12px;
+      min-height: 60px;
       padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: white;
+      border: 1px solid #e8e2d5;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #fff, #fcfaf4);
       color: var(--ink-soft);
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
+      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s, transform 0.18s;
+    }
+    .concern-option:hover {
+      transform: translateY(-1px);
+      border-color: #d7bd7d;
+      box-shadow: 0 5px 14px rgba(89, 55, 14, 0.07);
     }
     .concern-option input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--green);
+      display: grid;
+      flex: 0 0 21px;
+      width: 21px;
+      height: 21px;
+      place-content: center;
+      margin: 0;
+      appearance: none;
+      border: 1.5px solid #c9c1b1;
+      border-radius: 7px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    }
+    .concern-option input::before {
+      content: "✓";
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      transform: scale(0);
+      transition: transform 0.12s ease-in-out;
+    }
+    .concern-option input:checked {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .concern-option input:checked::before { transform: scale(1); }
+    .concern-option input:focus-visible {
+      outline: 3px solid rgba(201, 146, 42, 0.35);
+      outline-offset: 2px;
+    }
+    .concern-option.is-selected {
+      border-color: rgba(51, 91, 67, 0.55);
+      background: linear-gradient(145deg, #f2f7ed, #eaf2e6);
+      box-shadow: 0 0 0 2px rgba(51, 91, 67, 0.08);
     }
     .concern-search-error {
       margin: 12px 0 0;
@@ -617,9 +699,11 @@
     }
     .concern-search-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #eee8dc;
     }
     .concern-search-actions .button { border-radius: 10px; }
 
@@ -1314,9 +1398,48 @@
         padding: 64px 20px 80px;
       }
       .section { padding: 52px 0; }
-      .products { grid-template-columns: 1fr; gap: 16px; }
-      .product-body { padding: 16px; }
-      .product-body h3 { min-height: 0; }
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .product {
+        width: 100%;
+        min-height: 0;
+        aspect-ratio: 3 / 4;
+        border-radius: 14px;
+      }
+      .product-body { padding: 10px; }
+      .product-body h3 {
+        min-height: 0;
+        font-size: 13px;
+        line-height: 1.2;
+      }
+      .product-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 7px;
+      }
+      .product .price { font-size: 12px; }
+      .product .availability {
+        gap: 4px;
+        padding: 3px 6px;
+        font-size: 8px;
+      }
+      .product .availability::before { width: 5px; height: 5px; }
+      .product .buy-row {
+        gap: 5px;
+        padding-top: 8px;
+      }
+      .product .buy-row button {
+        min-width: 0;
+        min-height: 34px;
+        padding: 4px;
+        border-radius: 8px;
+        font-size: 9px;
+        line-height: 1.15;
+        white-space: normal;
+      }
       .about { padding: 24px; }
       .about-art { min-height: 200px; }
       .order-invitation { padding: 28px 22px; }
@@ -1363,8 +1486,9 @@
         width: 100%;
         max-height: 88dvh;
         margin: auto;
-        border-radius: 20px;
+        border-radius: 22px;
       }
+      .concern-search-modal .modal-heading { padding: 20px 20px 18px; }
       .concern-search-form { padding: 18px; }
       .result-modal {
         width: calc(100% - 28px);
@@ -1430,7 +1554,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       <div id="catalog-status" class="loading">Cargando catálogo artesanal…</div>
       <div class="catalog-filter-row">
         <p id="catalog-filter-status" class="catalog-filter-status" aria-live="polite" hidden></p>
-        <button id="clear-concern-filter" class="catalog-filter-reset" type="button" hidden>Quitar filtro</button>
+        <button id="clear-concern-filter" class="catalog-filter-reset" type="button" aria-label="Quitar el filtro por afección" hidden><span aria-hidden="true">×</span> Quitar filtro</button>
       </div>
       <div id="products" class="products"></div>
       <div id="no-concern-results" class="empty" hidden>No encontramos productos para las afecciones seleccionadas.</div>
@@ -1498,13 +1622,14 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     <section class="concern-search-modal" role="dialog" aria-modal="true" aria-labelledby="concern-search-title">
       <header class="modal-heading">
         <div>
+          <span class="concern-search-eyebrow">Búsqueda personalizada</span>
           <h2 id="concern-search-title">¿Qué afección quieres ayudar a tratar?</h2>
-          <p>Selecciona una o varias opciones.</p>
+          <p>Elige lo que buscas y encuentra el jabón ideal para ti.</p>
         </div>
         <button id="close-concern-search" class="modal-close" type="button" aria-label="Cerrar búsqueda">×</button>
       </header>
       <form id="concern-search-form" class="concern-search-form">
-        <p class="concern-search-hint">Te mostraremos los productos asociados con cualquiera de tus selecciones.</p>
+        <p class="concern-search-hint">Puedes elegir una o varias opciones. Te mostraremos productos asociados con cualquiera de ellas.</p>
         <div id="concern-options" class="concern-options"></div>
         <p id="concern-search-error" class="concern-search-error" role="alert" hidden>Selecciona al menos una afección para buscar.</p>
         <div class="concern-search-actions">
@@ -1758,10 +1883,9 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         requestAnimationFrame(() => button.classList.add('cart-pop'));
       }
     };
-    const addProductToCart = (product, quantity, button, quantityInput) => {
+    const addProductToCart = (product, quantity, button) => {
       if (!Number.isInteger(quantity) || quantity < 1 || quantity > Number(product.available)) {
         showToast('Elige una cantidad disponible para este jabón.');
-        quantityInput?.focus();
         return;
       }
       const existing = cart.get(product.id) || 0;
@@ -1887,6 +2011,11 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       document.getElementById('concern-options').innerHTML = concernOptions.map(({ value, label }) => `
         <label class="concern-option"><input type="checkbox" name="concern" value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span></label>
       `).join('');
+      document.querySelectorAll('#concern-options input[name="concern"]').forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+          checkbox.closest('.concern-option').classList.toggle('is-selected', checkbox.checked);
+        });
+      });
       selectedConcerns = new Set();
       document.getElementById('catalog-status').hidden = true;
       const container = document.getElementById('products');
@@ -1900,20 +2029,14 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         return `<article class="product" tabindex="0" data-open-product="${escapeHtml(product.id)}" aria-haspopup="dialog" aria-label="Ver detalles de ${escapeHtml(product.name)}">
           <div class="product-image">${photo ? `<img loading="lazy" src="${escapeHtml(photo)}" alt="${escapeHtml(product.name)}">` : '<span aria-hidden="true">✿</span>'}</div>
           <div class="product-body"><h3>${escapeHtml(product.name)}</h3>
-          <div class="buy-row"><input aria-label="Cantidad de ${escapeHtml(product.name)}" id="quantity-${escapeHtml(product.id)}" type="number" min="1" max="${available}" value="1" ${available < 1 ? 'disabled' : ''}><button class="button" type="button" data-add="${escapeHtml(product.id)}" ${available < 1 ? 'disabled' : ''}>Agregar al pedido</button></div>
-          <div class="product-meta"><span class="price">${currency.format(Number(product.price || 0))}</span><span class="availability${available < 1 ? ' none' : ''}">${available > 9 ? '9+ disponibles' : available > 0 ? `${available} disponibles` : 'Agotado'}</span></div></div>
+          <div class="product-meta"><span class="price">${currency.format(Number(product.price || 0))}</span><span class="availability${available < 1 ? ' none' : ''}">${available > 9 ? '9+ disponibles' : available > 0 ? `${available} disponibles` : 'Agotado'}</span></div>
+          <div class="buy-row"><button class="button" type="button" data-add="${escapeHtml(product.id)}" ${available < 1 ? 'disabled' : ''}>Agregar al pedido</button></div></div>
         </article>`;
       }).join('');
       applyConcernFilter();
-      container.querySelectorAll('.product input[type="number"]').forEach((input) => {
-        input.addEventListener('input', () => {
-          input.closest('.product').classList.toggle('is-selected', Number(input.value) > 0);
-        });
-      });
       container.querySelectorAll('[data-add]').forEach((button) => button.addEventListener('click', () => {
         const product = products.find((item) => item.id === button.dataset.add);
-        const quantityInput = document.getElementById(`quantity-${product.id}`);
-        addProductToCart(product, Number(quantityInput.value), button, quantityInput);
+        addProductToCart(product, 1, button);
       }));
     }
 
@@ -1938,6 +2061,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       concernSearchReturnFocus = trigger || document.activeElement;
       document.querySelectorAll('#concern-options input[name="concern"]').forEach((checkbox) => {
         checkbox.checked = selectedConcerns.has(checkbox.value);
+        checkbox.closest('.concern-option').classList.toggle('is-selected', checkbox.checked);
       });
       document.getElementById('concern-search-error').hidden = true;
       document.getElementById('concern-search-modal').hidden = false;
