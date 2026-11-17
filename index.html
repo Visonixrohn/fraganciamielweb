@@ -1781,7 +1781,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     // Never use a service_role or secret key in this public page.
     const SUPABASE_URL = 'https://alqoigvsxsgqenqosfbr.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_bHXZOe0puNVzekZFFxdm0g_qDQ1Aawo';
-    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSgpogcrfqPkKyntHplSP9Np0xhXCHUyQ-0h2maFyvGLGzWvSJnWF-KiSG-JUSzlYzIw/exec';
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGAby_UXynPYkCynmU13fFZQw9cMlEnnfKzzyrVHpZLb77vQNbYiL-GCJfFodTtK_mOw/exec';
     const currency = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' });
     const cart = new Map();
     const modalClosures = new WeakMap();
@@ -1863,12 +1863,11 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         console.warn('Configura GOOGLE_APPS_SCRIPT_URL para activar los avisos por correo.');
         return;
       }
-      const body = new URLSearchParams({ payload: JSON.stringify(order) });
-      await fetch(GOOGLE_APPS_SCRIPT_URL, {
-        method: 'POST',
+      const url = new URL(GOOGLE_APPS_SCRIPT_URL);
+      url.searchParams.set('payload', JSON.stringify(order));
+      await fetch(url, {
+        method: 'GET',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body,
       });
     };
     const renderProductDetails = (product) => {

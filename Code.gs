@@ -2,7 +2,15 @@
 // the deployment URL in index.html as GOOGLE_APPS_SCRIPT_URL.
 const RECIPIENT_EMAIL = 'visonixro@gmail.com';
 
+function doGet(e) {
+  return handleOrderRequest_(e);
+}
+
 function doPost(e) {
+  return handleOrderRequest_(e);
+}
+
+function handleOrderRequest_(e) {
   try {
     if (!e || !e.parameter || !e.parameter.payload) {
       throw new Error('Falta la información del pedido.');
