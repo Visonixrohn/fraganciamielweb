@@ -8,7 +8,10 @@ function doGet(e) {
 function handleOrderRequest_(e) {
   try {
     if (!e || !e.parameter || !e.parameter.payload) {
-      throw new Error('Falta la información del pedido.');
+      return jsonResponse_({
+        ok: false,
+        error: 'No se recibió un pedido. Envía la solicitud GET desde el formulario de la web.',
+      });
     }
 
     const order = JSON.parse(e.parameter.payload);
