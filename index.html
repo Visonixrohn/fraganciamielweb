@@ -1299,7 +1299,7 @@
     }
     .flying-bee {
       position: absolute;
-      left: -42px;
+      right: -42px;
       display: block;
       font-size: 16px;
       line-height: 1;
@@ -1359,24 +1359,24 @@
     }
     @keyframes bee-flight-one {
       0% { transform: translate(0, 0) rotate(-8deg); }
-      20% { transform: translate(22vw, 8vh) rotate(10deg); }
-      43% { transform: translate(48vw, -3vh) rotate(-10deg); }
-      69% { transform: translate(75vw, 6vh) rotate(12deg); }
-      100% { transform: translate(calc(100vw + 90px), 1vh) rotate(-6deg); }
+      20% { transform: translate(-22vw, 8vh) rotate(10deg); }
+      43% { transform: translate(-48vw, -3vh) rotate(-10deg); }
+      69% { transform: translate(-75vw, 6vh) rotate(12deg); }
+      100% { transform: translate(calc(-100vw - 90px), 1vh) rotate(-6deg); }
     }
     @keyframes bee-flight-two {
       0% { transform: translate(0, 0) rotate(8deg); }
-      24% { transform: translate(25vw, -6vh) rotate(-10deg); }
-      51% { transform: translate(53vw, 7vh) rotate(12deg); }
-      76% { transform: translate(81vw, -4vh) rotate(-8deg); }
-      100% { transform: translate(calc(100vw + 90px), 5vh) rotate(7deg); }
+      24% { transform: translate(-25vw, -6vh) rotate(-10deg); }
+      51% { transform: translate(-53vw, 7vh) rotate(12deg); }
+      76% { transform: translate(-81vw, -4vh) rotate(-8deg); }
+      100% { transform: translate(calc(-100vw - 90px), 5vh) rotate(7deg); }
     }
     @keyframes bee-flight-three {
       0% { transform: translate(0, 0) rotate(-6deg); }
-      22% { transform: translate(21vw, -5vh) rotate(11deg); }
-      47% { transform: translate(49vw, 5vh) rotate(-12deg); }
-      73% { transform: translate(78vw, -6vh) rotate(8deg); }
-      100% { transform: translate(calc(100vw + 90px), -1vh) rotate(-6deg); }
+      22% { transform: translate(-21vw, -5vh) rotate(11deg); }
+      47% { transform: translate(-49vw, 5vh) rotate(-12deg); }
+      73% { transform: translate(-78vw, -6vh) rotate(8deg); }
+      100% { transform: translate(calc(-100vw - 90px), -1vh) rotate(-6deg); }
     }
 
     /* Responsive */
