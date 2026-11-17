@@ -1717,7 +1717,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
           <div class="product-image">${photo ? `<img loading="lazy" src="${escapeHtml(photo)}" alt="${escapeHtml(product.name)}">` : '<span aria-hidden="true">✿</span>'}</div>
           <div class="product-body"><h3>${escapeHtml(product.name)}</h3>
           <div class="buy-row"><input aria-label="Cantidad de ${escapeHtml(product.name)}" id="quantity-${escapeHtml(product.id)}" type="number" min="1" max="${available}" value="1" ${available < 1 ? 'disabled' : ''}><button class="button" type="button" data-add="${escapeHtml(product.id)}" ${available < 1 ? 'disabled' : ''}>Agregar al pedido</button></div>
-          <div class="product-meta"><span class="price">${currency.format(Number(product.price || 0))}</span><span class="availability${available < 1 ? ' none' : ''}">${available > 0 ? `${available} disponibles` : 'Agotado'}</span></div></div>
+          <div class="product-meta"><span class="price">${currency.format(Number(product.price || 0))}</span><span class="availability${available < 1 ? ' none' : ''}">${available > 9 ? '9+ disponibles' : available > 0 ? `${available} disponibles` : 'Agotado'}</span></div></div>
         </article>`;
       }).join('');
       container.querySelectorAll('.product input[type="number"]').forEach((input) => {
