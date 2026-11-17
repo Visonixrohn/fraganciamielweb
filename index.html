@@ -1781,6 +1781,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     // Never use a service_role or secret key in this public page.
     const SUPABASE_URL = 'https://alqoigvsxsgqenqosfbr.supabase.co';
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_bHXZOe0puNVzekZFFxdm0g_qDQ1Aawo';
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8yvlKY8SmSy0W76C5rs-r7OQad5bNpNWBKLd2PKRld2n9rVu0rdpCP60jDo4LT1rP/exec';
     const currency = new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL' });
     const cart = new Map();
     const modalClosures = new WeakMap();
@@ -1856,6 +1857,19 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       const transaction = database.transaction('orders', 'readwrite');
       transaction.objectStore('orders').add(order);
       await waitForTransaction(transaction);
+    };
+    const notifyOrderByEmail = async (order) => {
+      if (!GOOGLE_APPS_SCRIPT_URL) {
+        console.warn('Configura GOOGLE_APPS_SCRIPT_URL para activar los avisos por correo.');
+        return;
+      }
+      const body = new URLSearchParams({ payload: JSON.stringify(order) });
+      await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body,
+      });
     };
     const renderProductDetails = (product) => {
       const list = (title, values) => values?.length
@@ -2250,6 +2264,29 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         showCartFeedback(error.message || 'No se pudo enviar el pedido. Comprueba la disponibilidad e inténtalo de nuevo.');
         return;
       }
+      let emailWarning = '';
+      try {
+        const orderItems = entries.map(([productId, quantity]) => {
+          const product = products.find((item) => item.id === productId);
+          return {
+            name: product?.name || String(productId),
+            quantity,
+            unitPrice: Number(product?.price || 0),
+          };
+        });
+        await notifyOrderByEmail({
+          orderNumber: String(data),
+          name: String(form.get('name') || ''),
+          phone: String(form.get('phone') || ''),
+          email: String(form.get('email') || ''),
+          address: String(form.get('address') || ''),
+          notes: String(form.get('notes') || ''),
+          items: orderItems,
+        });
+      } catch (notificationError) {
+        console.error('El pedido quedó registrado, pero no se pudo notificar por correo.', notificationError);
+        emailWarning = 'El pedido sí quedó registrado, pero no se pudo enviar el aviso por correo.';
+      }
       let storageWarning = '';
       try {
         const orderItems = entries.map(([productId, quantity]) => {
@@ -2293,6 +2330,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
         success: true,
         orderNumber: data,
         warning: [
+          emailWarning,
           storageWarning,
           refreshWarning ? `Tu pedido sí quedó registrado. No se pudo actualizar la disponibilidad en pantalla: ${refreshWarning}` : '',
         ].filter(Boolean).join(' '),
