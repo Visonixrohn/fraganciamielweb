@@ -631,10 +631,41 @@
       font-size: 13px;
       line-height: 1.6;
     }
+    .concern-search-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .concern-search-input {
+      width: 100%;
+      min-height: 46px;
+      margin-bottom: 16px;
+      padding: 10px 13px;
+      border: 1px solid #d9d1c2;
+      border-radius: 12px;
+      background: white;
+      color: var(--ink);
+    }
+    .concern-search-input:focus-visible {
+      outline: 3px solid rgba(201, 146, 42, 0.3);
+      outline-offset: 2px;
+      border-color: #b99142;
+    }
     .concern-options {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
       gap: 10px;
+    }
+    .concern-search-empty {
+      margin: 0;
+      padding: 14px;
+      border-radius: 12px;
+      background: #f8f5ed;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
     }
     .concern-option {
       display: flex;
@@ -1630,7 +1661,10 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       </header>
       <form id="concern-search-form" class="concern-search-form">
         <p class="concern-search-hint">Puedes elegir una o varias opciones. Te mostraremos productos asociados con cualquiera de ellas.</p>
+        <label class="concern-search-label" for="concern-search-input">Buscar afección</label>
+        <input id="concern-search-input" class="concern-search-input" type="search" placeholder="Escribe el nombre de una afección" aria-controls="concern-options">
         <div id="concern-options" class="concern-options"></div>
+        <p id="concern-search-empty" class="concern-search-empty" role="status" hidden>No encontramos afecciones con ese nombre.</p>
         <p id="concern-search-error" class="concern-search-error" role="alert" hidden>Selecciona al menos una afección para buscar.</p>
         <div class="concern-search-actions">
           <button id="cancel-concern-search" class="button secondary" type="button">Cancelar</button>
@@ -1761,6 +1795,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
     })[character]);
     const normalizeConcern = (value) => String(value ?? '').trim().toLocaleLowerCase('es');
+    const normalizeSearchText = (value) => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es').trim();
     const imageUrl = (path) => path ? client.storage.from('jabon').getPublicUrl(path).data.publicUrl : '';
     const getDatabase = () => {
       if (!databasePromise) {
@@ -2038,6 +2073,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
           checkbox.closest('.concern-option').classList.toggle('is-selected', checkbox.checked);
         });
       });
+      filterConcernOptions();
       selectedConcerns = new Set();
       document.getElementById('catalog-status').hidden = true;
       const container = document.getElementById('products');
@@ -2079,8 +2115,20 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       document.getElementById('clear-concern-filter').hidden = selectedConcerns.size === 0;
     }
 
+    function filterConcernOptions() {
+      const query = normalizeSearchText(document.getElementById('concern-search-input').value);
+      let visibleCount = 0;
+      document.querySelectorAll('#concern-options .concern-option').forEach((option) => {
+        option.hidden = !normalizeSearchText(option.textContent).includes(query);
+        if (!option.hidden) visibleCount += 1;
+      });
+      document.getElementById('concern-search-empty').hidden = visibleCount > 0;
+    }
+
     const openConcernSearch = (trigger) => {
       concernSearchReturnFocus = trigger || document.activeElement;
+      document.getElementById('concern-search-input').value = '';
+      filterConcernOptions();
       document.querySelectorAll('#concern-options input[name="concern"]').forEach((checkbox) => {
         checkbox.checked = selectedConcerns.has(checkbox.value);
         checkbox.closest('.concern-option').classList.toggle('is-selected', checkbox.checked);
@@ -2089,7 +2137,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       openModalHistory();
       document.getElementById('concern-search-modal').hidden = false;
       document.body.classList.add('modal-open');
-      document.getElementById('close-concern-search').focus();
+      document.getElementById('concern-search-input').focus();
     };
     const closeConcernSearch = async ({ fromPopstate = false } = {}) => {
       closeModalHistory(fromPopstate, false);
@@ -2286,6 +2334,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
     document.getElementById('open-concern-search').addEventListener('click', (event) => openConcernSearch(event.currentTarget));
     document.getElementById('close-concern-search').addEventListener('click', closeConcernSearch);
     document.getElementById('cancel-concern-search').addEventListener('click', closeConcernSearch);
+    document.getElementById('concern-search-input').addEventListener('input', filterConcernOptions);
     document.getElementById('concern-search-modal').addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closeConcernSearch();
     });
