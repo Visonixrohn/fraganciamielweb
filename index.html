@@ -608,6 +608,30 @@
       font-size: 14px;
       line-height: 1.7;
     }
+    .order-video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto 22px;
+      overflow: hidden;
+      border: 1px solid rgba(201, 146, 42, 0.45);
+      border-radius: 28px 28px 42px 28px;
+      background: #f0ead8;
+      box-shadow: 0 8px 20px rgba(89, 55, 14, 0.12);
+    }
+    .order-video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .order-video-waves {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
 
     /* ——— Reseller ——— */
     .reseller {
@@ -1329,6 +1353,16 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
           <span id="order-logo" class="flower">✿</span>
           <h3>Tu pedido te espera</h3>
           <p>Revisa tus jabones favoritos, elige cantidades y envíanos tu pedido. Te confirmaremos disponibilidad y coordinaremos la entrega.</p>
+          <div class="order-video-frame">
+            <video class="order-video" autoplay muted loop playsinline preload="metadata" aria-label="Video de nuestros productos">
+              <source src="1ee.mp4" type="video/mp4">
+              Tu navegador no admite la reproducción de video.
+            </video>
+            <svg class="order-video-waves" viewBox="0 0 580 326" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M-12 72 C 68 38, 104 104, 183 70 S 304 38, 381 73 S 499 105, 592 60" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="2.5"/>
+              <path d="M-10 267 C 77 229, 113 294, 201 258 S 331 228, 407 263 S 520 293, 592 249" fill="none" stroke="rgba(239,185,71,.82)" stroke-width="3"/>
+            </svg>
+          </div>
           <button class="button honey" type="button" data-open-cart>Ver mi carrito <span aria-hidden="true">→</span></button>
         </div>
       </div>
