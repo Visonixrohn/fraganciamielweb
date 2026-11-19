@@ -172,7 +172,7 @@
     .cart-link {
       position: fixed;
       right: 22px;
-      bottom: 22px;
+      bottom: 102px;
       z-index: 80;
       display: grid;
       width: 64px;
@@ -622,21 +622,30 @@
     .concern-search-trigger {
       position: fixed;
       right: 22px;
-      bottom: 102px;
+      bottom: 22px;
       z-index: 70;
-      min-height: 52px;
-      padding: 0 20px;
+      display: grid;
+      width: 64px;
+      height: 64px;
+      place-items: center;
+      padding: 0;
       border: 1px solid rgba(255, 255, 255, 0.6);
-      border-radius: 999px;
+      border-radius: 50%;
       background: linear-gradient(115deg, #ffe991 0%, #ffc83f 45%, #f2a91e 100%);
       background-size: 200% 200%;
       color: #4a3212;
-      font-size: 13px;
-      font-weight: 700;
       box-shadow: 0 8px 24px rgba(153, 99, 14, 0.3), 0 0 0 4px rgba(255, 220, 114, 0.22);
       cursor: pointer;
       transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
       animation: honey-button-float 3.2s ease-in-out infinite, honey-shimmer 5s ease-in-out infinite;
+    }
+    .concern-search-icon {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-width: 2;
     }
     .concern-search-trigger:hover {
       transform: translateY(-2px);
@@ -1588,15 +1597,14 @@
       .modal-actions { padding: 0 14px 16px; }
       .modal-actions .button { flex: 1; }
       .concern-search-trigger {
-        right: 12px;
-        bottom: 96px;
-        min-height: 46px;
-        padding: 0 16px;
-        font-size: 12px;
+        right: 16px;
+        bottom: 18px;
+        width: 60px;
+        height: 60px;
       }
       .cart-link {
         right: 16px;
-        bottom: 18px;
+        bottom: 96px;
         width: 60px;
         height: 60px;
       }
@@ -1729,7 +1737,9 @@
     <p>Jabones artesanales · Hechos con cuidado</p>
   </footer>
 
-  <button id="open-concern-search" class="concern-search-trigger" type="button" aria-haspopup="dialog" aria-controls="concern-search-modal" hidden>✿ Buscar por afección</button>
+  <button id="open-concern-search" class="concern-search-trigger" type="button" aria-label="Buscar por afección" title="Buscar por afección" aria-haspopup="dialog" aria-controls="concern-search-modal" hidden>
+    <svg class="concern-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+  </button>
 
   <div id="concern-search-modal" class="modal-backdrop" hidden>
     <section class="concern-search-modal" role="dialog" aria-modal="true" aria-labelledby="concern-search-title">
