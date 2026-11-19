@@ -4,8 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#5c3d1e">
-  <meta name="description" content="Jabones artesanales elaborados con ingredientes seleccionados. Fragancia y Miel.">
-  <title>Jabones artesanales | Fragancia y Miel</title>
+  <meta name="description" content="Descubre jabones artesanales de Fragancia y Miel, elaborados a mano con ingredientes seleccionados. Encuentra tu favorito y haz tu pedido en Honduras.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://fraganciaymiel.com/">
+  <link rel="icon" href="/logo.jpeg" type="image/jpeg">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_HN">
+  <meta property="og:site_name" content="Fragancia y Miel">
+  <meta property="og:title" content="Jabones artesanales en Honduras | Fragancia y Miel">
+  <meta property="og:description" content="Descubre jabones artesanales de Fragancia y Miel, elaborados a mano con ingredientes seleccionados. Encuentra tu favorito y haz tu pedido en Honduras.">
+  <meta property="og:url" content="https://fraganciaymiel.com/">
+  <meta property="og:image" content="https://fraganciaymiel.com/logo.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1254">
+  <meta property="og:image:height" content="1254">
+  <meta property="og:image:alt" content="Logo de Fragancia y Miel">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jabones artesanales en Honduras | Fragancia y Miel">
+  <meta name="twitter:description" content="Descubre jabones artesanales elaborados a mano con ingredientes seleccionados.">
+  <meta name="twitter:image" content="https://fraganciaymiel.com/logo.jpeg">
+  <title>Jabones artesanales en Honduras | Fragancia y Miel</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Fragancia y Miel",
+      "url": "https://fraganciaymiel.com/",
+      "logo": "https://fraganciaymiel.com/logo.jpeg",
+      "image": "https://fraganciaymiel.com/logo.jpeg",
+      "description": "Jabones artesanales elaborados a mano con ingredientes seleccionados."
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -141,36 +170,55 @@
     }
     .top nav a:hover { color: var(--green); }
     .cart-link {
-      display: inline-flex;
-      min-height: 40px;
-      align-items: center;
-      gap: 8px;
-      padding: 0 16px;
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 80;
+      display: grid;
+      width: 64px;
+      height: 64px;
+      place-items: center;
+      padding: 0;
       border: 0;
-      border-radius: 999px;
-      background: var(--green);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #6b481f, #3f2a14);
       color: white;
-      font-size: 12px;
-      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(92, 61, 30, 0.25);
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      box-shadow: 0 8px 22px rgba(61, 42, 20, 0.32), 0 0 0 4px rgba(255, 220, 114, 0.28);
+      transition: box-shadow 0.2s, filter 0.2s;
+      animation: cart-float 3s ease-in-out infinite;
     }
     .cart-link:hover {
-      background: var(--green-deep);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(92, 61, 30, 0.3);
+      filter: brightness(1.16);
+      box-shadow: 0 10px 26px rgba(61, 42, 20, 0.38), 0 0 0 5px rgba(255, 220, 114, 0.4);
+    }
+    .cart-link:focus-visible {
+      outline: 3px solid #f3ad28;
+      outline-offset: 4px;
+    }
+    .cart-icon {
+      width: 27px;
+      height: 27px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
     }
     .cart-count-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
       display: grid;
-      min-width: 20px;
-      height: 20px;
+      min-width: 23px;
+      height: 23px;
       place-items: center;
       padding: 0 5px;
+      border: 2px solid var(--cream);
       border-radius: 999px;
-      background: var(--gold-soft);
-      color: var(--green-deep);
-      font-size: 10px;
+      background: linear-gradient(145deg, #ffe58a, #f3ad28);
+      color: #4a3212;
+      font-size: 11px;
       font-weight: 800;
     }
     .cart-link.has-items .cart-count-badge {
@@ -574,39 +622,46 @@
     .concern-search-trigger {
       position: fixed;
       right: 22px;
-      bottom: 76px;
+      bottom: 102px;
       z-index: 70;
       min-height: 52px;
       padding: 0 20px;
       border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 999px;
-      background: var(--green);
-      color: white;
+      background: linear-gradient(115deg, #ffe991 0%, #ffc83f 45%, #f2a91e 100%);
+      background-size: 200% 200%;
+      color: #4a3212;
       font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 8px 24px rgba(61, 42, 20, 0.28);
+      box-shadow: 0 8px 24px rgba(153, 99, 14, 0.3), 0 0 0 4px rgba(255, 220, 114, 0.22);
       cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+      animation: honey-button-float 3.2s ease-in-out infinite, honey-shimmer 5s ease-in-out infinite;
     }
     .concern-search-trigger:hover {
       transform: translateY(-2px);
-      background: var(--green-deep);
+      filter: brightness(1.08);
+      box-shadow: 0 10px 28px rgba(153, 99, 14, 0.38), 0 0 0 5px rgba(255, 220, 114, 0.32);
+    }
+    .concern-search-trigger:focus-visible {
+      outline: 3px solid #8a5d16;
+      outline-offset: 4px;
     }
     .concern-search-modal {
       position: relative;
       width: min(100%, 520px);
       max-height: min(88vh, 680px);
       overflow: auto;
-      border: 1px solid rgba(201, 146, 42, 0.2);
+      border: 1px solid rgba(201, 146, 42, 0.42);
       border-radius: 26px;
-      background: #fffefa;
-      box-shadow: 0 32px 80px rgba(30, 22, 12, 0.3);
+      background: radial-gradient(circle at 100% 100%, rgba(255, 221, 130, 0.14), transparent 38%), #fffefa;
+      box-shadow: 0 32px 80px rgba(30, 22, 12, 0.3), 0 0 34px rgba(255, 199, 63, 0.12);
     }
     .concern-search-modal .modal-heading {
       align-items: flex-start;
       padding: 26px 28px 22px;
-      border-bottom-color: rgba(201, 146, 42, 0.18);
-      background: radial-gradient(circle at 0% 0%, #fff1c8, transparent 62%), #fffefa;
+      border-bottom-color: rgba(201, 146, 42, 0.3);
+      background: radial-gradient(circle at 0% 0%, #ffe8a5, transparent 68%), #fffefa;
     }
     .concern-search-modal .modal-heading h2 {
       max-width: 370px;
@@ -715,8 +770,8 @@
       transition: transform 0.12s ease-in-out;
     }
     .concern-option input:checked {
-      border-color: var(--green);
-      background: var(--green);
+      border-color: #c58a1a;
+      background: linear-gradient(145deg, #eab02e, #c58a1a);
     }
     .concern-option input:checked::before { transform: scale(1); }
     .concern-option input:focus-visible {
@@ -724,9 +779,9 @@
       outline-offset: 2px;
     }
     .concern-option.is-selected {
-      border-color: rgba(51, 91, 67, 0.55);
-      background: linear-gradient(145deg, #f2f7ed, #eaf2e6);
-      box-shadow: 0 0 0 2px rgba(51, 91, 67, 0.08);
+      border-color: rgba(201, 146, 42, 0.75);
+      background: linear-gradient(145deg, #fff8df, #ffefbf);
+      box-shadow: 0 0 0 2px rgba(201, 146, 42, 0.12);
     }
     .concern-search-error {
       margin: 12px 0 0;
@@ -742,6 +797,15 @@
       border-top: 1px solid #eee8dc;
     }
     .concern-search-actions .button { border-radius: 10px; }
+    .concern-search-actions .button:not(.secondary) {
+      background: linear-gradient(135deg, #ffdc72, #f3ad28);
+      color: #4a3212;
+      box-shadow: 0 5px 16px rgba(153, 99, 14, 0.26);
+    }
+    .concern-search-actions .button:not(.secondary):hover:not(:disabled) {
+      background: linear-gradient(135deg, #ffe99b, #ffc144);
+      box-shadow: 0 7px 20px rgba(153, 99, 14, 0.32);
+    }
 
     /* ——— About ——— */
     .about {
@@ -1379,6 +1443,18 @@
       70% { transform: rotate(4deg) scale(1.06); }
       100% { transform: none; }
     }
+    @keyframes cart-float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -5px; }
+    }
+    @keyframes honey-button-float {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -4px; }
+    }
+    @keyframes honey-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
     @keyframes added-pop {
       50% { transform: scale(1.04); }
     }
@@ -1513,10 +1589,16 @@
       .modal-actions .button { flex: 1; }
       .concern-search-trigger {
         right: 12px;
-        bottom: 72px;
+        bottom: 96px;
         min-height: 46px;
         padding: 0 16px;
         font-size: 12px;
+      }
+      .cart-link {
+        right: 16px;
+        bottom: 18px;
+        width: 60px;
+        height: 60px;
       }
       .concern-search-modal {
         width: 100%;
@@ -1551,7 +1633,7 @@
   <div class="honey-edge right" aria-hidden="true"><span></span><span></span><span></span></div>
   <header class="top">
     <a class="brand" href="#inicio">
-      <span id="brand-mark" class="brand-mark">✿</span>
+      <img id="brand-mark" class="brand-mark" src="/logo.jpeg" alt="Logo de Fragancia y Miel">
       <span>
         <strong id="brand-name">Fragancia y Miel</strong>
         <small>Jabones artesanales</small>
@@ -1560,8 +1642,9 @@
     <nav aria-label="Navegación principal">
       <a href="#productos">Productos</a>
       <a href="#historia">Nuestra esencia</a>
-      <button id="open-cart" class="cart-link" type="button" aria-haspopup="dialog" aria-controls="cart-modal">
-        Mi pedido <span id="cart-count" class="cart-count-badge">0</span>
+      <button id="open-cart" class="cart-link" type="button" aria-label="Mi pedido, 0 productos" aria-haspopup="dialog" aria-controls="cart-modal">
+        <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
+        <span id="cart-count" class="cart-count-badge">0</span>
       </button>
     </nav>
   </header>
@@ -1570,8 +1653,8 @@
     <section class="hero" id="inicio">
       <div class="hero-inner">
         <span class="eyebrow">Hecho a mano, con intención</span>
-        <h1 id="hero-title">Fragancia y Miel<br></h1>
-        <p id="hero-tagline">Jabones artesanales hechos con cuidado</p>
+        <h1 id="hero-title">Jabones artesanales de Fragancia y Miel</h1>
+        <p id="hero-tagline">Elaborados a mano con ingredientes seleccionados para convertir tu rutina en un momento especial.</p>
       </div>
     </section>
 
@@ -1579,13 +1662,7 @@
       <div class="section-title">
         <span class="eyebrow">Nuestra colección</span>
         <h2>Un jabón para cada momento</h2>
-        <p>Regálale a tu piel un momento especial. ✨
-
-Descubre nuestra colección de jabones artesanales, elaborados con ingredientes seleccionados, aromas encantadores y el cuidado que cada detalle merece.
-
-🌿 Encuentra tu favorito y convierte tu rutina diaria en un momento de bienestar.
-
-¡Elige el tuyo y haz tu pedido hoy! 💛</p>
+        <p>Descubre jabones artesanales elaborados a mano con ingredientes seleccionados y aromas encantadores. Encuentra tu favorito y convierte tu rutina diaria en un momento especial.</p>
       </div>
       <div id="catalog-status" class="loading">Cargando catálogo artesanal…</div>
       <div class="catalog-filter-row">
@@ -1947,6 +2024,7 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
       const count = [...cart.values()].reduce((sum, amount) => sum + amount, 0);
       const button = document.getElementById('open-cart');
       document.getElementById('cart-count').textContent = count > 99 ? '99+' : count;
+      button.setAttribute('aria-label', `Mi pedido, ${count} producto${count === 1 ? '' : 's'}`);
       button.classList.toggle('has-items', count > 0);
       if (count > 0) {
         button.classList.remove('cart-pop');
@@ -2044,7 +2122,23 @@ Descubre nuestra colección de jabones artesanales, elaborados con ingredientes 
 
     function renderCatalog(settings, items) {
       const businessName = settings?.business_name || 'Fragancia y Miel';
-      document.title = `Jabones artesanales | ${businessName}`;
+      const pageTitle = `Jabones artesanales en Honduras | ${businessName}`;
+      const pageDescription = `Descubre jabones artesanales de ${businessName}, elaborados a mano con ingredientes seleccionados. Encuentra tu favorito y haz tu pedido en Honduras.`;
+      document.title = pageTitle;
+      document.querySelector('meta[name="description"]').content = pageDescription;
+      document.querySelector('meta[property="og:title"]').content = pageTitle;
+      document.querySelector('meta[property="og:description"]').content = pageDescription;
+      document.querySelector('meta[name="twitter:title"]').content = pageTitle;
+      document.querySelector('meta[name="twitter:description"]').content = pageDescription;
+      document.querySelector('script[type="application/ld+json"]').textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: businessName,
+        url: 'https://fraganciaymiel.com/',
+        logo: 'https://fraganciaymiel.com/logo.jpeg',
+        image: 'https://fraganciaymiel.com/logo.jpeg',
+        description: pageDescription,
+      });
       document.getElementById('brand-name').textContent = businessName;
       document.getElementById('footer-name').textContent = businessName;
       document.getElementById('hero-tagline').textContent = settings?.tagline || 'Jabones artesanales hechos con cuidado';
