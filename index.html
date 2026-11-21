@@ -2293,159 +2293,223 @@
         const businessName = document.getElementById('brand-name').textContent || 'Fragancia y Miel';
 
         context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = '#f7efe0';
-        context.fillRect(0, 0, 1080, 1080);
-
-        const backgroundGradient = context.createRadialGradient(230, 320, 20, 230, 320, 620);
+        const backgroundGradient = context.createLinearGradient(0, 0, 1080, 1080);
         backgroundGradient.addColorStop(0, '#fffdf7');
-        backgroundGradient.addColorStop(0.55, '#f5dfaa');
-        backgroundGradient.addColorStop(1, '#dcae50');
+        backgroundGradient.addColorStop(0.48, '#f4dfad');
+        backgroundGradient.addColorStop(1, '#d29b3d');
         context.fillStyle = backgroundGradient;
         context.fillRect(0, 0, 1080, 1080);
 
-        context.fillStyle = 'rgba(91, 55, 20, 0.08)';
+        context.fillStyle = 'rgba(91, 55, 20, 0.10)';
+        for (let index = 0; index < 6; index += 1) {
+          context.beginPath();
+          context.arc(920 + (index % 2) * 38, 70 + index * 38, 7, 0, Math.PI * 2);
+          context.fill();
+        }
         context.beginPath();
-        context.arc(1005, 120, 190, 0, Math.PI * 2);
-        context.fill();
-        context.beginPath();
-        context.arc(-35, 920, 210, 0, Math.PI * 2);
+        context.arc(-70, 1010, 240, 0, Math.PI * 2);
         context.fill();
 
         context.textAlign = 'left';
-        context.fillStyle = 'rgba(255, 252, 245, 0.92)';
-        context.beginPath();
-        context.arc(92, 92, 54, 0, Math.PI * 2);
-        context.fill();
-
         if (logo) {
           context.save();
+          context.fillStyle = '#fffaf1';
           context.beginPath();
-          context.arc(92, 92, 48, 0, Math.PI * 2);
+          context.arc(96, 96, 58, 0, Math.PI * 2);
+          context.fill();
+          context.beginPath();
+          context.arc(96, 96, 50, 0, Math.PI * 2);
           context.clip();
-          context.drawImage(logo, 44, 44, 96, 96);
+          context.drawImage(logo, 46, 46, 100, 100);
           context.restore();
         } else {
+          context.fillStyle = '#fffaf1';
+          context.beginPath();
+          context.arc(96, 96, 58, 0, Math.PI * 2);
+          context.fill();
           context.fillStyle = '#8a5a1a';
           context.font = '700 42px Georgia';
           context.textAlign = 'center';
-          context.fillText('✿', 92, 106);
+          context.fillText('✿', 96, 111);
         }
 
         context.textAlign = 'left';
         context.fillStyle = '#503316';
-        context.font = '700 38px Georgia';
-        context.fillText(businessName, 170, 82);
-        context.fillStyle = '#805b25';
+        context.font = '700 40px Georgia';
+        context.fillText(businessName, 178, 84);
+        context.fillStyle = '#91682f';
+        context.font = '700 16px Arial';
+        context.fillText('JABONES ARTESANALES', 180, 116);
+
+        context.fillStyle = '#fffaf1';
+        roundedRect(context, 780, 58, 224, 58, 29);
+        context.fill();
+        context.fillStyle = '#6a451c';
         context.font = '700 17px Arial';
-        context.fillText('JABONES ARTESANALES • HECHO CON CUIDADO', 172, 112);
+        context.textAlign = 'center';
+        context.fillText('HECHO A MANO', 892, 94);
+        context.textAlign = 'left';
 
         context.save();
         context.shadowColor = 'rgba(74, 49, 18, 0.24)';
         context.shadowBlur = 34;
         context.shadowOffsetY = 18;
         context.fillStyle = '#fffaf1';
-        roundedRect(context, 54, 170, 972, 806, 44);
+        roundedRect(context, 54, 154, 972, 842, 44);
         context.fill();
         context.restore();
 
-        context.fillStyle = '#f1dfbd';
-        roundedRect(context, 54, 170, 972, 806, 44);
-        context.fill();
-
         context.save();
-        roundedRect(context, 78, 194, 526, 758, 34);
+        roundedRect(context, 78, 178, 526, 794, 34);
         context.clip();
-        context.fillStyle = '#ead9b5';
-        context.fillRect(78, 194, 526, 758);
-        drawContainedImage(context, photo, 78, 194, 526, 758, 26);
+        context.fillStyle = '#efe1c2';
+        context.fillRect(78, 178, 526, 794);
+        if (photo) {
+          const photoScale = Math.max(526 / photo.naturalWidth, 794 / photo.naturalHeight);
+          const photoWidth = photo.naturalWidth * photoScale;
+          const photoHeight = photo.naturalHeight * photoScale;
+          context.drawImage(photo, 78 + (526 - photoWidth) / 2, 178 + (794 - photoHeight) / 2, photoWidth, photoHeight);
+        }
         context.restore();
 
         context.save();
         context.strokeStyle = '#fffaf1';
         context.lineWidth = 10;
-        roundedRect(context, 78, 194, 526, 758, 34);
+        roundedRect(context, 78, 178, 526, 794, 34);
         context.stroke();
         context.restore();
 
         context.fillStyle = '#fffaf1';
-        roundedRect(context, 106, 222, 190, 50, 25);
+        roundedRect(context, 106, 206, 194, 54, 27);
         context.fill();
         context.fillStyle = '#71491d';
         context.font = '700 18px Arial';
         context.textAlign = 'center';
-        context.fillText('ARTESANAL', 201, 254);
+        context.fillText('100% ARTESANAL', 203, 240);
         context.textAlign = 'left';
 
+        const weight = String(product.soap_weight || '').trim();
+        if (weight) {
+          context.fillStyle = 'rgba(74, 49, 18, 0.82)';
+          roundedRect(context, 106, 876, 170, 54, 27);
+          context.fill();
+          context.fillStyle = '#fffaf1';
+          context.font = '700 18px Arial';
+          context.textAlign = 'center';
+          context.fillText(`≈ ${weight} g`, 191, 910);
+          context.textAlign = 'left';
+        }
+
         context.fillStyle = '#503316';
-        context.font = '700 52px Georgia';
-        const titleLines = wrapCanvasText(context, product.name || 'Jabón artesanal', 326);
-        let titleY = 300;
+        context.font = '700 48px Georgia';
+        const titleLines = wrapCanvasText(context, product.name || 'Jabón artesanal', 340);
+        let titleY = 218;
         titleLines.slice(0, 3).forEach((line) => {
-          context.fillText(line, 652, titleY);
+          context.fillText(line, 638, titleY);
           titleY += 62;
         });
 
         context.fillStyle = '#d29a35';
-        roundedRect(context, 652, titleY + 8, 82, 7, 4);
+        roundedRect(context, 638, titleY - 8, 86, 7, 4);
         context.fill();
 
         context.fillStyle = '#80694a';
-        context.font = '700 20px Arial';
-        context.fillText('SUS BENEFICIOS', 652, titleY + 68);
+        context.font = '700 18px Arial';
+        context.fillText('BENEFICIOS', 638, titleY + 50);
 
         const benefits = Array.isArray(product.benefits) ? product.benefits.filter(Boolean) : [];
-        const displayBenefits = benefits.slice(0, 3);
-        let benefitY = titleY + 112;
+        const displayBenefits = benefits.slice(0, 2);
+        let benefitY = titleY + 92;
 
         if (displayBenefits.length) {
           displayBenefits.forEach((benefit) => {
-            const lines = wrapCanvasText(context, benefit, 278).slice(0, 2);
+            const lines = wrapCanvasText(context, benefit, 292).slice(0, 2);
             context.fillStyle = '#fffaf1';
             context.strokeStyle = '#dfc99a';
             context.lineWidth = 2;
-            const pillHeight = Math.max(64, lines.length * 32 + 20);
-            roundedRect(context, 652, benefitY - 36, 326, pillHeight, 18);
+            const pillHeight = Math.max(58, lines.length * 30 + 18);
+            roundedRect(context, 638, benefitY - 34, 348, pillHeight, 16);
             context.fill();
             context.stroke();
             context.fillStyle = '#d29a35';
             context.beginPath();
-            context.arc(678, benefitY - 4, 8, 0, Math.PI * 2);
+            context.arc(665, benefitY - 2, 7, 0, Math.PI * 2);
             context.fill();
             context.fillStyle = '#5c4a38';
-            context.font = '600 21px Arial';
+            context.font = '600 19px Arial';
             lines.forEach((line, index) => {
-              context.fillText(line, 701, benefitY + index * 31);
+              context.fillText(line, 686, benefitY + index * 29);
             });
-            benefitY += pillHeight + 18;
+            benefitY += pillHeight + 12;
           });
         } else {
           context.fillStyle = '#fffaf1';
-          roundedRect(context, 652, benefitY - 36, 326, 64, 18);
+          roundedRect(context, 638, benefitY - 34, 348, 58, 16);
           context.fill();
           context.fillStyle = '#5c4a38';
-          context.font = '600 21px Arial';
-          context.fillText('Cuidado suave para tu piel', 678, benefitY + 3);
+          context.font = '600 19px Arial';
+          context.fillText('Cuidado suave para tu piel', 663, benefitY);
+        }
+
+        const composition = Array.isArray(product.composition) ? product.composition.filter(Boolean).slice(0, 3) : [];
+        const concerns = Array.isArray(product.health_concerns) ? product.health_concerns.filter(Boolean).slice(0, 2) : [];
+        let detailY = Math.max(benefitY + 54, 620);
+
+        context.fillStyle = '#80694a';
+        context.font = '700 18px Arial';
+        context.fillText('INGREDIENTES DESTACADOS', 638, detailY);
+        context.fillStyle = '#5c4a38';
+        context.font = '600 17px Arial';
+        const compositionText = composition.length ? composition.join('  ·  ') : 'Ingredientes naturales';
+        const compositionLines = wrapCanvasText(context, compositionText, 348).slice(0, 2);
+        compositionLines.forEach((line, index) => context.fillText(line, 638, detailY + 31 + index * 26));
+
+        detailY += compositionLines.length > 1 ? 82 : 56;
+
+        if (concerns.length) {
+          context.fillStyle = '#80694a';
+          context.font = '700 18px Arial';
+          context.fillText('IDEAL PARA', 638, detailY);
+          context.fillStyle = '#5c4a38';
+          context.font = '600 17px Arial';
+          const concernText = concerns.join('  ·  ');
+          wrapCanvasText(context, concernText, 348).slice(0, 2).forEach((line, index) => {
+            context.fillText(line, 638, detailY + 31 + index * 26);
+          });
+          detailY += 68;
+        }
+
+        const usage = String(product.usage_instructions || '').trim();
+        if (usage) {
+          context.fillStyle = '#80694a';
+          context.font = '700 18px Arial';
+          context.fillText('MODO DE USO', 638, detailY);
+          context.fillStyle = '#5c4a38';
+          context.font = '600 16px Arial';
+          wrapCanvasText(context, usage, 348).slice(0, 2).forEach((line, index) => {
+            context.fillText(line, 638, detailY + 29 + index * 24);
+          });
         }
 
         context.save();
         context.shadowColor = 'rgba(74, 49, 18, 0.18)';
-        context.shadowBlur = 18;
+        context.shadowBlur = 16;
         context.shadowOffsetY = 8;
         context.fillStyle = '#654018';
-        roundedRect(context, 652, 858, 326, 112, 24);
+        roundedRect(context, 638, 874, 348, 102, 22);
         context.fill();
         context.restore();
         context.fillStyle = '#dcbf74';
-        context.font = '700 17px Arial';
-        context.fillText('PRECIO', 682, 899);
+        context.font = '700 16px Arial';
+        context.fillText('PRECIO', 668, 912);
         context.fillStyle = '#fffaf1';
-        context.font = '700 42px Georgia';
-        context.fillText(currency.format(Number(product.price || 0)), 682, 944);
+        context.font = '700 40px Georgia';
+        context.fillText(currency.format(Number(product.price || 0)), 668, 956);
 
         context.fillStyle = '#805b25';
         context.textAlign = 'center';
-        context.font = '700 17px Arial';
-        context.fillText('AROMA  •  CUIDADO  •  BIENESTAR', 540, 1028);
+        context.font = '700 16px Arial';
+        context.fillText('AROMA  •  CUIDADO  •  NATURALEZA', 540, 1028);
 
         adBlob = await canvasToBlob(canvas);
         openModalHistory();
