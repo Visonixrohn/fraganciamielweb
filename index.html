@@ -2406,6 +2406,8 @@
         const photo = await loadCanvasImage(imageUrl(product.image_path));
         const logoElement = document.querySelector('#brand-mark');
         const logo = await loadCanvasImage(logoElement?.src || '');
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent('https://fraganciaymiel.com/')}`;
+        const qr = await loadCanvasImage(qrUrl);
         const canvas = document.getElementById('product-ad-canvas');
         const context = canvas.getContext('2d');
         const businessName = document.getElementById('brand-name').textContent || 'Fragancia y Miel';
@@ -2518,6 +2520,18 @@
           context.textAlign = 'left';
         }
 
+        if (qr) {
+          context.save();
+          context.shadowColor = 'rgba(74, 49, 18, 0.20)';
+          context.shadowBlur = 14;
+          context.shadowOffsetY = 6;
+          context.fillStyle = '#fffaf1';
+          roundedRect(context, 432, 802, 144, 144, 18);
+          context.fill();
+          context.restore();
+          context.drawImage(qr, 447, 817, 114, 114);
+        }
+
         context.fillStyle = '#503316';
         context.font = '700 48px Georgia';
         const titleLines = wrapCanvasText(context, product.name || 'Jabón artesanal', 340);
@@ -2533,80 +2547,38 @@
 
         context.fillStyle = '#80694a';
         context.font = '700 18px Arial';
-        context.fillText('BENEFICIOS', 638, titleY + 50);
+        context.fillText('AYUDA CON', 638, titleY + 50);
 
-        const benefits = Array.isArray(product.benefits) ? product.benefits.filter(Boolean) : [];
-        const displayBenefits = benefits.slice(0, 2);
-        let benefitY = titleY + 92;
-
-        if (displayBenefits.length) {
-          displayBenefits.forEach((benefit) => {
-            const lines = wrapCanvasText(context, benefit, 292).slice(0, 2);
+        const concerns = Array.isArray(product.health_concerns) ? product.health_concerns.filter(Boolean).slice(0, 3) : [];
+        let concernY = titleY + 92;
+        if (concerns.length) {
+          concerns.forEach((concern) => {
+            const lines = wrapCanvasText(context, concern, 292).slice(0, 2);
+            const pillHeight = Math.max(58, lines.length * 30 + 18);
             context.fillStyle = '#fffaf1';
             context.strokeStyle = '#dfc99a';
             context.lineWidth = 2;
-            const pillHeight = Math.max(58, lines.length * 30 + 18);
-            roundedRect(context, 638, benefitY - 34, 348, pillHeight, 16);
+            roundedRect(context, 638, concernY - 34, 348, pillHeight, 16);
             context.fill();
             context.stroke();
             context.fillStyle = '#d29a35';
             context.beginPath();
-            context.arc(665, benefitY - 2, 7, 0, Math.PI * 2);
+            context.arc(665, concernY - 2, 7, 0, Math.PI * 2);
             context.fill();
             context.fillStyle = '#5c4a38';
             context.font = '600 19px Arial';
             lines.forEach((line, index) => {
-              context.fillText(line, 686, benefitY + index * 29);
+              context.fillText(line, 686, concernY + index * 29);
             });
-            benefitY += pillHeight + 12;
+            concernY += pillHeight + 12;
           });
         } else {
           context.fillStyle = '#fffaf1';
-          roundedRect(context, 638, benefitY - 34, 348, 58, 16);
+          roundedRect(context, 638, concernY - 34, 348, 58, 16);
           context.fill();
           context.fillStyle = '#5c4a38';
           context.font = '600 19px Arial';
-          context.fillText('Cuidado suave para tu piel', 663, benefitY);
-        }
-
-        const composition = Array.isArray(product.composition) ? product.composition.filter(Boolean).slice(0, 3) : [];
-        const concerns = Array.isArray(product.health_concerns) ? product.health_concerns.filter(Boolean).slice(0, 2) : [];
-        let detailY = Math.max(benefitY + 54, 620);
-
-        context.fillStyle = '#80694a';
-        context.font = '700 18px Arial';
-        context.fillText('INGREDIENTES DESTACADOS', 638, detailY);
-        context.fillStyle = '#5c4a38';
-        context.font = '600 17px Arial';
-        const compositionText = composition.length ? composition.join('  ·  ') : 'Ingredientes naturales';
-        const compositionLines = wrapCanvasText(context, compositionText, 348).slice(0, 2);
-        compositionLines.forEach((line, index) => context.fillText(line, 638, detailY + 31 + index * 26));
-
-        detailY += compositionLines.length > 1 ? 82 : 56;
-
-        if (concerns.length) {
-          context.fillStyle = '#80694a';
-          context.font = '700 18px Arial';
-          context.fillText('IDEAL PARA', 638, detailY);
-          context.fillStyle = '#5c4a38';
-          context.font = '600 17px Arial';
-          const concernText = concerns.join('  ·  ');
-          wrapCanvasText(context, concernText, 348).slice(0, 2).forEach((line, index) => {
-            context.fillText(line, 638, detailY + 31 + index * 26);
-          });
-          detailY += 68;
-        }
-
-        const usage = String(product.usage_instructions || '').trim();
-        if (usage) {
-          context.fillStyle = '#80694a';
-          context.font = '700 18px Arial';
-          context.fillText('MODO DE USO', 638, detailY);
-          context.fillStyle = '#5c4a38';
-          context.font = '600 16px Arial';
-          wrapCanvasText(context, usage, 348).slice(0, 2).forEach((line, index) => {
-            context.fillText(line, 638, detailY + 29 + index * 24);
-          });
+          context.fillText('Cuidado suave para tu piel', 663, concernY);
         }
 
         context.save();
