@@ -2549,7 +2549,7 @@
         context.font = '700 18px Arial';
         context.fillText('AYUDA CON', 638, titleY + 50);
 
-        const concerns = Array.isArray(product.health_concerns) ? product.health_concerns.filter(Boolean).slice(0, 3) : [];
+        const concerns = Array.isArray(product.health_concerns) ? product.health_concerns.filter(Boolean).slice(0, 4) : [];
         let concernY = titleY + 92;
         if (concerns.length) {
           concerns.forEach((concern) => {
@@ -2586,15 +2586,29 @@
         context.shadowBlur = 16;
         context.shadowOffsetY = 8;
         context.fillStyle = '#654018';
-        roundedRect(context, 638, 874, 348, 102, 22);
+        roundedRect(context, 638, 834, 348, 138, 22);
         context.fill();
         context.restore();
         context.fillStyle = '#dcbf74';
-        context.font = '700 16px Arial';
-        context.fillText('PRECIO', 668, 912);
+        context.font = '700 14px Arial';
+        context.fillText('PRECIO NORMAL', 668, 864);
         context.fillStyle = '#fffaf1';
-        context.font = '700 40px Georgia';
-        context.fillText(currency.format(Number(product.price || 0)), 668, 956);
+        context.font = '600 23px Georgia';
+        const normalPrice = currency.format(Number(product.normal_price || 0));
+        context.fillText(normalPrice, 668, 895);
+        const normalPriceWidth = context.measureText(normalPrice).width;
+        context.strokeStyle = '#fffaf1';
+        context.lineWidth = 2;
+        context.beginPath();
+        context.moveTo(668, 888);
+        context.lineTo(668 + normalPriceWidth, 888);
+        context.stroke();
+        context.fillStyle = '#dcbf74';
+        context.font = '700 14px Arial';
+        context.fillText('OFERTA', 668, 929);
+        context.fillStyle = '#fffaf1';
+        context.font = '700 34px Georgia';
+        context.fillText(currency.format(Number(product.price || 0)), 668, 964);
 
         context.fillStyle = '#805b25';
         context.textAlign = 'center';
