@@ -2115,7 +2115,7 @@
     <section class="shopping-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title">
       <header class="modal-heading">
         <div>
-          <h2 id="cart-title">Tu carrito artesanal</h2>
+          <h2 id="cart-title" tabindex="-1">Tu carrito artesanal</h2>
           <p>Tu selección, preparada con cariño.</p>
         </div>
         <button id="close-cart" class="modal-close" type="button" aria-label="Cerrar carrito">×</button>
@@ -2140,9 +2140,6 @@
           </label>
           <label>Teléfono / WhatsApp
             <input name="phone" type="tel" autocomplete="tel" maxlength="40" required>
-          </label>
-          <label>Correo electrónico (opcional)
-            <input name="email" type="email" autocomplete="email" maxlength="254">
           </label>
           <label>Dirección o zona de entrega
             <input name="address" maxlength="500">
@@ -2769,7 +2766,7 @@
       openModalHistory();
       document.getElementById('cart-modal').hidden = false;
       document.body.classList.add('modal-open');
-      document.querySelector('#cart-modal input[name="name"]').focus();
+      document.getElementById('cart-title').focus();
     };
     const closeCart = async ({ fromPopstate = false, keepHistory = false } = {}) => {
       closeModalHistory(fromPopstate, keepHistory);
