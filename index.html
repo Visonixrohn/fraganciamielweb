@@ -2480,7 +2480,8 @@
     const generateProductAd = async (product) => {
       const button = document.getElementById('product-modal-ad');
       button.disabled = true;
-      button.textContent = 'Generando...';
+      button.setAttribute('aria-label', 'Generando imagen publicitaria');
+      button.title = 'Generando imagen publicitaria';
       adBlob = null;
       try {
         if (document.fonts?.ready) await document.fonts.ready;
@@ -2706,7 +2707,8 @@
         showToast('No pudimos generar la imagen publicitaria.');
       } finally {
         button.disabled = false;
-        button.textContent = 'Generar publicidad';
+        button.setAttribute('aria-label', 'Generar imagen publicitaria para compartir');
+        button.title = 'Generar imagen para compartir';
       }
     };
     const closeAdPreview = async ({ fromPopstate = false } = {}) => {
