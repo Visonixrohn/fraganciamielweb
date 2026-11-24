@@ -1127,8 +1127,8 @@
     }
     .product-detail-modal {
       position: relative;
-      width: min(100%, 860px);
-      max-height: min(92vh, 760px);
+      width: min(100%, 1000px);
+      max-height: min(92vh, 820px);
       overflow: auto;
       border: 1px solid #ebe3d0;
       border-radius: 22px;
@@ -1137,12 +1137,12 @@
     }
     .product-detail-layout {
       display: grid;
-      min-height: 420px;
-      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      grid-template-columns: 1.1fr 0.9fr;
     }
     .product-detail-image {
       display: grid;
-      min-height: 420px;
+      min-height: 520px;
       place-items: center;
       overflow: hidden;
       background:
@@ -1152,10 +1152,11 @@
     .product-detail-image img {
       width: 100%;
       height: 100%;
-      min-height: 420px;
-      padding: 28px;
+      min-height: 520px;
+      padding: 16px;
       object-fit: contain;
       filter: drop-shadow(0 10px 14px rgba(61, 42, 20, 0.12));
+      animation: product-image-enter 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
     }
     .product-detail-image > span {
       color: #b29b6c;
@@ -1165,8 +1166,25 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 42px 36px;
+      padding: 42px 32px;
     }
+    .product-detail-info > * {
+      animation: product-text-enter 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .product-detail-info > :nth-child(1) { animation-delay: 0.08s; }
+    .product-detail-info > :nth-child(2) { animation-delay: 0.14s; }
+    .product-detail-info > :nth-child(3) { animation-delay: 0.2s; }
+    .product-detail-info > :nth-child(4) { animation-delay: 0.26s; }
+    .product-detail-info > :nth-child(5) { animation-delay: 0.32s; }
+    .product-detail-info > :nth-child(6) { animation-delay: 0.38s; }
+    .product-detail-info > :nth-child(7) { animation-delay: 0.44s; }
+    .product-detail-info .product-detail-content > * {
+      animation: product-text-enter 0.45s ease both;
+    }
+    .product-detail-info .product-detail-content > :nth-child(2) { animation-delay: 0.08s; }
+    .product-detail-info .product-detail-content > :nth-child(3) { animation-delay: 0.16s; }
+    .product-detail-info .product-detail-content > :nth-child(4) { animation-delay: 0.24s; }
+    
     .product-detail-close {
       position: absolute;
       top: 14px;
@@ -1200,8 +1218,25 @@
       margin-top: 24px;
     }
     .product-detail-actions .button {
+      display: grid;
+      width: 52px;
+      min-width: 52px;
+      height: 52px;
+      min-height: 52px;
+      place-items: center;
+      padding: 0;
+      border-radius: 50%;
       margin-top: 0;
       align-self: auto;
+    }
+    .product-detail-actions .button svg {
+      width: 23px;
+      height: 23px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
     }
     .product-detail-actions .secondary {
       border: 1px solid #dbcaa5;
@@ -1214,6 +1249,21 @@
       border-color: #cbb98f;
       box-shadow: none;
     }
+    .product-detail-actions .product-whatsapp {
+      background: linear-gradient(145deg, #ffe58a, #f3ad28);
+      color: #4a3212;
+      box-shadow: 0 4px 14px rgba(153, 99, 14, 0.24);
+    }
+    .product-detail-actions .product-whatsapp:hover:not(:disabled) {
+      background: linear-gradient(145deg, #ffedac, #ffd34f);
+      box-shadow: 0 6px 18px rgba(153, 99, 14, 0.3);
+    }
+    .product-detail-actions .added {
+      background: var(--success);
+      color: white;
+      animation: added-pop 0.35s ease;
+    }
+    .product-detail-actions .added:hover:not(:disabled) { background: var(--success); }
     .ad-preview-modal {
       position: relative;
       width: min(94vw, 620px);
@@ -1629,6 +1679,14 @@
       72% { opacity: 1; transform: translateY(-3px) scale(1.02); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
+    @keyframes product-image-enter {
+      from { opacity: 0; transform: scale(0.88); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes product-text-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     @keyframes modal-exit {
       to { opacity: 0; transform: translateY(18px) scale(0.9); }
     }
@@ -1792,17 +1850,16 @@
       .product-detail-layout { min-height: 0; grid-template-columns: 1fr; }
       .product-detail-image,
       .product-detail-image img {
-        min-height: 220px;
-        max-height: 32vh;
+        min-height: 300px;
+        max-height: 40vh;
       }
       .product-detail-info { padding: 24px; }
       .product-detail-info > .button { width: 100%; }
       .product-detail-actions {
         width: 100%;
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
       }
-      .product-detail-actions .button { width: 100%; }
+      .product-detail-actions .button { width: 52px; }
       .ad-preview-actions { grid-template-columns: 1fr; }
       .ad-preview-modal { width: 100%; border-radius: 20px 20px 0 0; }
       .modal-heading { padding: 16px 18px; }
@@ -2019,8 +2076,15 @@
           </div>
           <div id="product-modal-content" class="product-detail-content"></div>
           <div class="product-detail-actions">
-            <button id="product-modal-add" class="button" type="button">Agregar al carrito</button>
-            <button id="product-modal-ad" class="button secondary" type="button">Generar imagen</button>
+            <button id="product-modal-add" class="button" type="button" aria-label="Agregar al carrito" title="Agregar al carrito">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 1.9-1.4L22 8H6"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
+            </button>
+            <button id="product-modal-ad" class="button secondary" type="button" aria-label="Generar imagen publicitaria para compartir" title="Generar imagen para compartir">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"></path></svg>
+            </button>
+            <a id="product-modal-whatsapp" class="button product-whatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Consultar este producto por WhatsApp" title="Consultar por WhatsApp" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L3 20l1.2-4.8a8.2 8.2 0 1 1 16-3.5Z"></path><path d="M8.2 7.8c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4-.1.6.5 1 1.3 1.7 2.3 2.2.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.2.1.4.3.4.5 0 .3-.2 1.3-.8 1.8-.5.5-1.2.7-2 .5-1-.2-2.2-.7-3.7-2-1.2-1-2.1-2.5-2.4-3.4-.3-.8-.1-1.7.3-2.4Z"></path></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -2140,6 +2204,7 @@
     let selectedConcerns = new Set();
     let client;
     let detailProduct = null;
+    let whatsappNumber = '';
     let returnFocus = null;
     let concernSearchReturnFocus = null;
     let toastTimer;
@@ -2320,7 +2385,13 @@
       updateCartBadge();
       hideCartFeedback();
       button.classList.add('added');
-      button.textContent = '✓ Agregado';
+      const isProductDetailButton = button.id === 'product-modal-add';
+      if (isProductDetailButton) {
+        button.setAttribute('aria-label', 'Agregado al carrito');
+        button.title = 'Agregado al carrito';
+      } else {
+        button.textContent = '✓ Agregado';
+      }
       button.closest('.product')?.classList.add('is-selected');
       showToast(addedQuantity < quantity
         ? `Agregamos ${addedQuantity} unidad${addedQuantity === 1 ? '' : 'es'} de ${product.name}; es lo disponible.`
@@ -2329,7 +2400,12 @@
         ? 'Agregar al carrito' : 'Agregar al pedido';
       setTimeout(() => {
         button.classList.remove('added');
-        button.textContent = originalLabel;
+        if (isProductDetailButton) {
+          button.setAttribute('aria-label', originalLabel);
+          button.title = originalLabel;
+        } else {
+          button.textContent = originalLabel;
+        }
       }, 1400);
     };
     const openProductDetails = (product, trigger) => {
@@ -2348,6 +2424,11 @@
       availability.classList.toggle('none', available < 1);
       document.getElementById('product-modal-content').innerHTML = renderProductDetails(product);
       document.getElementById('product-modal-add').disabled = available < 1;
+      const whatsappLink = document.getElementById('product-modal-whatsapp');
+      whatsappLink.hidden = !whatsappNumber;
+      if (whatsappNumber) {
+        whatsappLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hola, me interesa el producto ${product.name || 'Jabón artesanal'}. ¿Podrían darme más información?`)}`;
+      }
       openModalHistory();
       document.getElementById('product-modal').hidden = false;
       document.body.classList.add('modal-open');
@@ -2792,7 +2873,7 @@
         socialLinks.append(link);
       });
       document.getElementById('social-section').hidden = socialLinks.childElementCount === 0;
-      const whatsappNumber = String(settings?.whatsapp_phone || settings?.phone || '').replace(/\D/g, '');
+      whatsappNumber = String(settings?.whatsapp_phone || settings?.phone || '').replace(/\D/g, '');
       if (whatsappNumber) {
         const reseller = document.getElementById('reseller-link');
         reseller.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hola, me interesa revender los jabones artesanales de ${businessName}.`)}`;
