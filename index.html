@@ -2035,40 +2035,6 @@
     <svg class="concern-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
   </button>
 
-  <audio id="background-music" src="coro.mp3" loop autoplay muted preload="auto" playsinline></audio>
-  <script>
-    (() => {
-      const music = document.getElementById('background-music');
-      music.volume = 1;
-
-      const playMusic = () => {
-        music.play().catch(() => {});
-      };
-
-      const startAfterUserGesture = () => {
-        music.muted = false;
-        playMusic();
-        document.removeEventListener('pointerdown', startAfterUserGesture);
-        document.removeEventListener('keydown', startAfterUserGesture);
-        document.removeEventListener('touchstart', startAfterUserGesture);
-      };
-
-      document.addEventListener('pointerdown', startAfterUserGesture);
-      document.addEventListener('keydown', startAfterUserGesture);
-      document.addEventListener('touchstart', startAfterUserGesture, { passive: true });
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) playMusic();
-      });
-      music.addEventListener('ended', playMusic);
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', playMusic, { once: true });
-      } else {
-        playMusic();
-      }
-    })();
-  </script>
-
   <div id="concern-search-modal" class="modal-backdrop" hidden>
     <section class="concern-search-modal" role="dialog" aria-modal="true" aria-labelledby="concern-search-title">
       <header class="modal-heading">
