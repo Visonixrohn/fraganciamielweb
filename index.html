@@ -761,39 +761,6 @@
       font-size: 17px;
       line-height: 0.8;
     }
-    .music-toggle {
-      position: fixed;
-      right: 22px;
-      bottom: 182px;
-      z-index: 79;
-      display: grid;
-      width: 52px;
-      height: 52px;
-      place-items: center;
-      padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.72);
-      border-radius: 50%;
-      background: linear-gradient(145deg, #fff3b8, #ddb34b);
-      color: #4a3212;
-      cursor: pointer;
-      box-shadow: 0 8px 22px rgba(153, 99, 14, 0.28), 0 0 0 3px rgba(255, 220, 114, 0.24);
-    }
-    .music-toggle:hover { filter: brightness(1.04); }
-    .music-toggle:focus-visible {
-      outline: 3px solid #8a5d16;
-      outline-offset: 4px;
-    }
-    .music-toggle svg {
-      width: 24px;
-      height: 24px;
-      fill: none;
-      stroke: currentColor;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 1.8;
-    }
-    .music-toggle[aria-pressed="true"] .music-off { display: none; }
-    .music-toggle[aria-pressed="false"] .music-on { display: none; }
     .concern-search-trigger {
       position: fixed;
       right: 22px;
@@ -1913,12 +1880,6 @@
         width: 60px;
         height: 60px;
       }
-      .music-toggle {
-        right: 16px;
-        bottom: 172px;
-        width: 52px;
-        height: 52px;
-      }
       .cart-link {
         right: 16px;
         bottom: 96px;
@@ -2075,10 +2036,6 @@
   </button>
 
   <audio id="background-music" src="coro.mp3" loop autoplay preload="auto"></audio>
-  <button id="music-toggle" class="music-toggle" type="button" aria-label="Silenciar música" aria-pressed="false" title="Silenciar música">
-    <svg class="music-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l10-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>
-    <svg class="music-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l10-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle><path d="m3 3 18 18"></path></svg>
-  </button>
 
   <div id="concern-search-modal" class="modal-backdrop" hidden>
     <section class="concern-search-modal" role="dialog" aria-modal="true" aria-labelledby="concern-search-title">
@@ -2250,33 +2207,14 @@
     let returnFocus = null;
 
     const backgroundMusic = document.getElementById('background-music');
-    const musicToggle = document.getElementById('music-toggle');
-
-    function updateMusicToggle(isPlaying) {
-      musicToggle.setAttribute('aria-pressed', String(isPlaying));
-      musicToggle.setAttribute('aria-label', isPlaying ? 'Silenciar música' : 'Reproducir música');
-      musicToggle.title = isPlaying ? 'Silenciar música' : 'Reproducir música';
-    }
 
     async function startBackgroundMusic() {
-      if (backgroundMusic.muted) return;
       try {
         await backgroundMusic.play();
-        updateMusicToggle(true);
       } catch {
-        updateMusicToggle(false);
+        // Browsers may require a user gesture before playing audio.
       }
     }
-
-    musicToggle.addEventListener('click', () => {
-      if (backgroundMusic.muted || backgroundMusic.paused) {
-        backgroundMusic.muted = false;
-        void startBackgroundMusic();
-      } else {
-        backgroundMusic.muted = true;
-        updateMusicToggle(false);
-      }
-    });
 
     const enableMusicAfterGesture = () => {
       void startBackgroundMusic();
